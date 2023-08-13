@@ -38,11 +38,6 @@ class AuthenticationController < ApplicationController
     end
 
     def login_post
-        # If this has the parameter type of totp, then render the totp page.
-        if params[:type] == 'totp'
-            return totp_handler
-        end
-
         # Get the email and password.
         email = params[:email]
         password = params[:password]
