@@ -1,0 +1,28 @@
+<h1 class="text-xl mb-2">
+    <%= icon 'fa-solid', 'globe' %> Hello World!
+</h1>
+
+<p class="mb-2">
+    If you see this, your application works! Here are a few things you might want to do next:
+</p>
+
+<div class="ml-4">
+    <ul class="list-outside list-disc">
+        <li>
+            You may want to change the margins/other opinionated properties of the <code>main</code> tag
+            in <code>app/views/layouts/application.html.erb</code>. In there, you can also change the
+            dark theme colors (or disable it if you want to).
+        </li>
+        <li>
+            You probably want to change <code>@title</code> and <code>@description</code> in
+            <code>app/controllers/application_controller.rb</code>. These are used in the
+            rendering of the application layout as the default title and description.
+        </li>
+        <li>
+            You may want to add environment variables! To do so, you can add them to
+            <code>.env</code> or <code>.env.<%= :'<environment>' %>.local</code> (where
+            <code><%= :'<environment>' %></code> is the environment you want to add the#
+            variables to, e.g. <code>development</code> or <code>test</code>).
+        </li>
+    </ul>
+</div>

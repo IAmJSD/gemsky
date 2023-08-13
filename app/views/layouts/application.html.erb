@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @title %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+
+    <meta name="description" content="<%= @description %>">
+    <meta name="og:type" content="website">
+    <meta name="og:title" content="<%= @title %>">
+    <meta name="og:url" content="<%= request.original_url %>">
+    <meta name="og:description" content="<%= @description %>">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body class="dark:text-white dark:bg-gray-900">
+    <main class="container mx-auto mt-28 px-5">
+      <%= yield %>
+    </main>
+  </body>
+</html>
