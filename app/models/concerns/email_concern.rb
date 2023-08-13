@@ -8,6 +8,10 @@ module EmailConcern
             message: "must be a valid email address"
         }
 
+        def self.find_by_email(email)
+            self.find_by(email: email.downcase.strip)
+        end
+
         private
 
         def downcase_email
