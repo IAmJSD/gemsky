@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
+    attr_accessor :title, :description
+
     def initialize
         # Setup the class.
         super
 
         # Defines the initial values for the title and description.
-        @title = "A Website"
-        @description = "A website made with the web-scale-rails template."
+        @title = "Clearsky"
+        @description = "Clearsky is a client for the Bluesky application."
     end
-
-    attr_accessor :title, :description
 end
