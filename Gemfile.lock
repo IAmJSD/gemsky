@@ -159,6 +159,7 @@ GEM
     rake (13.0.6)
     reline (0.3.7)
       io-console (~> 0.5)
+    rotp (6.2.2)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -215,6 +216,7 @@ DEPENDENCIES
   jsbundling-rails
   puma (~> 5.0)
   rails (~> 7.0.7)
+  rotp
   sassc-rails
   sprockets-rails
   sqlite3 (~> 1.4)

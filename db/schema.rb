@@ -10,7 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_13_045227) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_13_060421) do
+  create_table "half_tokens", force: :cascade do |t|
+    t.string "token", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_half_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_half_tokens_on_user_id"
+  end
+
+  create_table "totp_recovery_codes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_totp_recovery_codes_on_user_id"
+  end
+
   create_table "user_tokens", force: :cascade do |t|
     t.string "token", null: false
     t.integer "user_id", null: false
@@ -25,8 +42,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_045227) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "totp_secret"
+    t.index "\"half_token\"", name: "index_users_on_half_token"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "half_tokens", "users"
+  add_foreign_key "totp_recovery_codes", "users"
   add_foreign_key "user_tokens", "users"
 end

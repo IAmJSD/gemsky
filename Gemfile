@@ -57,6 +57,9 @@ gem "font-awesome-sass", "~> 6.4.2"
 # Use Sass to process CSS
 gem "sassc-rails"
 
+# Use ROTP for TOTP.
+gem "rotp"
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 

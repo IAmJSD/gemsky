@@ -20,6 +20,10 @@ module TokenConcern
             @token_wraps
         end
 
+        def self.return_full_token
+            @return_full_token = true
+        end
+
         def self.resolve_token!(token)
             # Find the token.
             x = self.find_by!(token: token)
@@ -36,7 +40,7 @@ module TokenConcern
 
             # Touch the record and return the wrapped value.
             x.touch
-            x.send(self.token_wraps)
+            @return_full_token ? x : x.send(self.token_wraps)
         end
 
         def self.resolve_token(token)
