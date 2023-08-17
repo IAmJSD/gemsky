@@ -17,7 +17,7 @@ class BlueskyUser < ApplicationRecord
 
     def regenerate_bluesky_client!
         client = BlueskyClient.new(self.did, self.token)
-        self.bluesky_client_marshalled = Marshal.dump(client)
+        self.bluesky_client_marshalled = Base64.encode64(Marshal.dump(client))
     end
 
     class BlueskyCallWrapper
@@ -28,7 +28,7 @@ class BlueskyUser < ApplicationRecord
         def client
             # If it exists, unmarshal it.
             unless @model_instance.bluesky_client_marshalled.nil?
-               return Marshal.load(@model_instance.bluesky_client_marshalled)
+               return Marshal.load(Base64.decode64(@model_instance.bluesky_client_marshalled))
             end
 
             # Call the method to make a new one on the model instance.
@@ -52,10 +52,11 @@ class BlueskyUser < ApplicationRecord
 
         def do_request!(method, *args, &block)
             # Send the method to the client.
-            res = self.client.send(method, *args, &block)
+            new_client = self.client
+            res = new_client.send(method, *args, &block)
 
             # Remarshal the client since information in it may have changed.
-            @model_instance.bluesky_client_marshalled = Marshal.dump(self.client)
+            @model_instance.bluesky_client_marshalled = Base64.encode64(Marshal.dump(new_client))
 
             # Save the model instance.
             @model_instance.save!
