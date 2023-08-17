@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get 'components/user_list', to: 'turbo_components#user_list'
 
   # Defines a VERY slim API for the AJAX calls.
-  get "ajax/notification_count", to: "ajax#notification_count"
+  get "ajax/notification_count/:did", to: "ajax#notification_count"
 
   # Defines the homepage routes.
   get "home", to: "home#home"

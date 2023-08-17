@@ -19,7 +19,7 @@ export default class extends Controller {
 
   updateCount() {
     // Get the count from the server.
-    fetch("/ajax/notification_count")
+    fetch(`/ajax/notification_count/${this.element.dataset.did}`)
       .then(response => response.json())
       .then(data => {
         // Set the element's text to the count.
