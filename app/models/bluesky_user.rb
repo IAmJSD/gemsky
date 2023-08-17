@@ -98,6 +98,7 @@ class BlueskyUser < ApplicationRecord
     end
 
     def user_is_an_editor
+        return unless self.user_id_changed?
         return if self.bluesky_user_editors.exists?(user: self.user)
         errors.add(:user, 'must be an editor')
     end
