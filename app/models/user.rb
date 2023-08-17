@@ -17,7 +17,7 @@ class User < ApplicationRecord
         self.half_tokens.destroy_all
     end
 
-    def bluesky_users
+    def linked_bluesky_users
         BlueskyUser.joins(:bluesky_user_editors).where(bluesky_user_editors: { user_id: self.id })
     end
 end

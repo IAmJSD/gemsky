@@ -18,4 +18,10 @@ Rails.application.routes.draw do
   get "register/:token", to: "authentication#register_remainder"
   post "register/:token", to: "authentication#register_remainder_post"
   get "email/update/:token", to: "authentication#email_change_token_click"
+
+  # Defines the homepage routes.
+  get "home", to: "home#home"
+  get "home/new", to: "home#new_user"
+  post "home/new", to: "home#new_user_post"
+  get "home/:did", to: "home#home_did"
 end

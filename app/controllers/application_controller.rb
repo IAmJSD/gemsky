@@ -15,6 +15,29 @@ class ApplicationController < ActionController::Base
     attr_accessor :user
     helper_method :user
 
+    def validate_did_permissions!
+        # Get the did from most likely the path.
+        did = params[:did]
+
+        # Handle the happy path here.
+        unless self.user.nil?
+            # Get the bluesky users that the user is an editor of.
+            bluesky_user_editors = self.user.linked_bluesky_users
+
+            # Try to find the bluesky user.
+            @bluesky_user = bluesky_user_editors.find_by(did: did)
+
+            # If we found it, return.
+            return unless @bluesky_user.nil?
+        end
+
+        # 404 if the user is logged in.
+        raise ActionController::RoutingError.new('Not Found') unless self.user.nil?
+
+        # Redirect to the login page.
+        redirect_to_login
+    end
+
     private
 
     def redirect_to_login
