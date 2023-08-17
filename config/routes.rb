@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   post "register/:token", to: "authentication#register_remainder_post"
   get "email/update/:token", to: "authentication#email_change_token_click"
 
+  # Defines the Turbo components (used when a component is too slow to load with the rest of the page).
+  get 'components/user_list', to: 'turbo_components#user_list'
+
   # Defines the homepage routes.
   get "home", to: "home#home"
   get "home/new", to: "home#new_user"

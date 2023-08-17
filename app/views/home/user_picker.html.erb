@@ -4,7 +4,9 @@
 ) %>
 
 <%= render DesktopSmallerViewComponent.new do %>
-    <%= render UserSelectorComponent.new(
-        users: user.linked_bluesky_users,
-    ) %>
+    <turbo-frame id="user_list" src="/components/user_list">
+        <div class="block mx-auto max-w-max">
+            <%= render SpinnerComponent.new %>
+        </div>
+    </turbo-frame>
 <% end %>
