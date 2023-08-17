@@ -25,6 +25,10 @@ class BlueskyClient
         get.app_bsky_actor_getProfile(actor: did)
     end
 
+    def get_profiles(*dids)
+        get.app_bsky_actor_getProfiles(actors: dids)
+    end
+
     private
 
     def get
