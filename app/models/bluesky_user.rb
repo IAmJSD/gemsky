@@ -20,6 +20,12 @@ class BlueskyUser < ApplicationRecord
         self.bluesky_client_marshalled = Base64.encode64(Marshal.dump(client))
     end
 
+    def bluesky_client
+        BlueskyCallWrapper.new(self)
+    end
+
+    private
+
     class BlueskyCallWrapper
         def initialize(model_instance)
             @model_instance = model_instance
@@ -65,12 +71,6 @@ class BlueskyUser < ApplicationRecord
             res
         end
     end
-
-    def bluesky_client
-        BlueskyCallWrapper.new(self)
-    end
-
-    private
 
     def set_did
         if self.did.nil?
