@@ -20,6 +20,11 @@ class BlueskyClient
         get.com_atproto_server_getSession
     end
 
+    def get_profile(did: nil)
+        did = @identifier if did.nil?
+        get.app_bsky_actor_getProfile(actor: did)
+    end
+
     private
 
     def get
