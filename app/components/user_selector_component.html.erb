@@ -6,7 +6,7 @@
     <% if user['handle'].nil? %>
         Unable to lookup user (<%= user['did'] %>)
     <% else %>
-        <div class="flex">
+        <div class="flex" data-controller="twemoji">
             <div class="flex-col">
                 <img
                     class="w-12 h-12 rounded-full"
