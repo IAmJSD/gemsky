@@ -38,14 +38,14 @@ class BlueskyUser < ApplicationRecord
             @model_instance = model_instance
         end
 
-        def method_missing(method, *args, &block)
-            self.do_request!(method, *args, &block)
+        def method_missing(method, *args, **kwargs, &block)
+            self.do_request!(method, *args, **kwargs, &block)
         rescue
             # Remake the client.
             @model_instance.regenerate_bluesky_client!
 
             # Try again.
-            self.do_request!(method, *args, &block)
+            self.do_request!(method, *args, **kwargs, &block)
         end
 
         private

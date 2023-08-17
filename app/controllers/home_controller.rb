@@ -16,6 +16,9 @@ class HomeController < ApplicationController
         if @bluesky_users.length == 1
             redirect_to "/home/#{@bluesky_users[0].did}"
         end
+
+        # Render the user picker.
+        render :user_picker
     end
 
     def new_user; end

@@ -62,8 +62,8 @@ class ErrorHandlerWrapper
         @client = client
     end
 
-    def method_missing(method, *args, &block)
-        x = @client.send(method, *args, &block)
+    def method_missing(method, *args, **kwargs, &block)
+        x = @client.send(method, *args, **kwargs, &block)
         return x if x['error'].nil?
         raise BlueskyError.new(x['error'], x['message'])
     end
