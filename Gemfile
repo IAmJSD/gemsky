@@ -78,3 +78,6 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+# Defines xrpc which we need to communicate with Bluesky.
+gem "xrpc", "~> 0.1.6"

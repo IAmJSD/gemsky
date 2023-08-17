@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_13_064727) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_17_162747) do
+  create_table "bluesky_users", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "token", null: false
+    t.string "did", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "bluesky_client_marshalled"
+    t.index ["did"], name: "index_bluesky_users_on_did", unique: true
+    t.index ["token"], name: "index_bluesky_users_on_token", unique: true
+    t.index ["user_id"], name: "index_bluesky_users_on_user_id"
+  end
+
   create_table "half_tokens", force: :cascade do |t|
     t.string "token", null: false
     t.integer "user_id", null: false
@@ -76,6 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_064727) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "bluesky_users", "users"
   add_foreign_key "half_tokens", "users"
   add_foreign_key "totp_recovery_codes", "users"
   add_foreign_key "user_email_update_requests", "users"
