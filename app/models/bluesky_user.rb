@@ -1,10 +1,13 @@
 class BlueskyUser < ApplicationRecord
     belongs_to :user
+    has_many :bluesky_user_editors, dependent: :destroy
 
     validates :token, presence: true # We don't need to uniqueness check since the DID will be unique.
     before_validation :set_did
     validates :identifier, presence: true
     validates :did, presence: true, uniqueness: true
+    after_create :add_owner_to_editors
+    validate :user_is_an_editor, on: :update
 
     def identifier
         return @identifier unless @identifier.nil?
@@ -22,6 +25,10 @@ class BlueskyUser < ApplicationRecord
 
     def bluesky_client
         BlueskyCallWrapper.new(self)
+    end
+
+    def editors
+        self.bluesky_user_editors
     end
 
     private
@@ -84,5 +91,14 @@ class BlueskyUser < ApplicationRecord
                 self.did = nil
             end
         end
+    end
+
+    def add_owner_to_editors
+        self.bluesky_user_editors.create!(user: self.user)
+    end
+
+    def user_is_an_editor
+        return if self.bluesky_user_editors.exists?(user: self.user)
+        errors.add(:user, 'must be an editor')
     end
 end
