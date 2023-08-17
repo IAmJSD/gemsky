@@ -1,0 +1,10 @@
+<%= render FormHeaderComponent.new(
+    title: 'Welcome to Clearsky!',
+    description: 'Please select the user you wish to login with:',
+) %>
+
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= render UserSelectorComponent.new(
+        users: user.linked_bluesky_users,
+    ) %>
+<% end %>

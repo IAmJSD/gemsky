@@ -1,0 +1,53 @@
+<% resolved_users.each do |user| %>
+    <% unless user['handle'].nil? %>
+    <a href="/home/<%= user['did'] %>" class="w-full unstyled" data-turbo-target="_top">
+    <% end %>
+
+    <% if user['handle'].nil? %>
+        Unable to lookup user (<%= user['did'] %>)
+    <% else %>
+        <div class="flex">
+            <div class="flex-col">
+                <img
+                    class="w-12 h-12 rounded-full"
+                    src="<%= user['avatar'] ? user['avatar'] : '/default_pfp.png' %>"
+                    alt=""
+                />
+            </div>
+
+            <div class="flex-col ml-2 my-auto">
+                <h3 class="text-lg font-medium">
+                    <%= user['displayName'] %>
+                </h3>
+                <p class="text-sm">
+                    <%= user['handle'] %>
+                </p>
+            </div>
+        </div>
+    <% end %>
+
+    <% unless user['handle'].nil? %>
+    </a>
+    <% end %>
+
+    <%= render DividerComponent.new %>
+<% end %>
+
+<a href="/home/new" class="w-full unstyled" data-turbo-target="_top">
+    <div class="flex">
+        <div class="flex-col">
+            <p class="text-5xl">
+                <%= icon 'fa-solid', 'plus' %>
+            </p>
+        </div>
+
+        <div class="flex-col ml-2 my-auto">
+            <h3 class="text-lg font-medium">
+                Add a Bluesky User
+            </h3>
+            <p class="text-sm">
+                Add a Bluesky user to your account (and replace any other usages on Clearsky).
+            </p>
+        </div>
+    </div>
+</a>
