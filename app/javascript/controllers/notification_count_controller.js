@@ -23,7 +23,7 @@ export default class extends Controller {
       .then(response => response.json())
       .then(data => {
         // Set the element's text to the count.
-        this.element.textContent = data.count
+        this.element.textContent = data.toString()
       })
   }
 }
