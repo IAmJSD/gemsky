@@ -1,44 +1,42 @@
-<turbo-frame id="home">
-    <%= render FormHeaderComponent.new(
-        title: 'Add a Bluesky User',
-        description: 'Add a Bluesky user to your account. This will replace any other usages of this Bluesky user if completed, so make sure to add other users with the editor flow.',
-    ) %>
+<%= render FormHeaderComponent.new(
+    title: 'Add a Bluesky User',
+    description: 'Add a Bluesky user to your account. This will replace any other usages of this Bluesky user if completed, so make sure to add other users with the editor flow.',
+) %>
 
-    <%= render DesktopSmallerViewComponent.new do %>
-        <%= form_with method: :post, data: {turbo: false} do %>
-            <% unless @errors.nil? %>
-                <%= render NotificationComponent.new(
-                    type: 'error',
-                    body: @errors,
-                ) %>
-            <% end %>
-
-            <%= render InputComponent.new(
-                name: 'identifier',
-                label: 'Bluesky Identifier',
-                description: ('The identifier of the Bluesky user you want to add to your account.' +
-                    ' For example, <code>x.bsky.social</code>.').html_safe,
-                value: params[:identifier],
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= form_with method: :post, data: { turbo: false } do %>
+        <% unless @errors.nil? %>
+            <%= render NotificationComponent.new(
+                type: 'error',
+                body: @errors,
             ) %>
-
-            <div class="mt-4">
-                <%= render InputComponent.new(
-                    name: 'token',
-                    label: 'Bluesky Token',
-                    description: ('The token of the Bluesky user you want to add to your account.' +
-                        ' You can get this from App Passwords in your account settings.').html_safe,
-                    type: 'password',
-                ) %>
-            </div>
-
-            <div class="mt-6 text-center">
-                <%= render ButtonComponent.new(
-                    name: 'submit',
-                    label: 'Add User',
-                    type: 'submit',
-                    icon: 'plus',
-                ) %>
-            </div>
         <% end %>
+
+        <%= render InputComponent.new(
+            name: 'identifier',
+            label: 'Bluesky Identifier',
+            description: ('The identifier of the Bluesky user you want to add to your account.' +
+                ' For example, <code>x.bsky.social</code>.').html_safe,
+            value: params[:identifier],
+        ) %>
+
+        <div class="mt-4">
+            <%= render InputComponent.new(
+                name: 'token',
+                label: 'Bluesky Token',
+                description: ('The token of the Bluesky user you want to add to your account.' +
+                    ' You can get this from App Passwords in your account settings.').html_safe,
+                type: 'password',
+            ) %>
+        </div>
+
+        <div class="mt-6 text-center">
+            <%= render ButtonComponent.new(
+                name: 'submit',
+                label: 'Add User',
+                type: 'submit',
+                icon: 'plus',
+            ) %>
+        </div>
     <% end %>
-</turbo-frame>
+<% end %>
