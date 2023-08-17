@@ -29,7 +29,7 @@ class AuthenticationController < ApplicationController
         # Upgrade the token.
         user_token = half_token.upgrade!
         cookies[:user_token] = {
-            value: user_token.token,
+            value: user_token,
             expires: 6.days.from_now, # Probably best to kill the token before it actually dies.
         }
 
@@ -91,6 +91,12 @@ class AuthenticationController < ApplicationController
     def forgot_password_enter_email; end
 
     def forgot_password_enter_email_post
+        # If email is blank, then re-render the page.
+        if params[:email].blank?
+            render 'forgot_password_enter_email'
+            return
+        end
+
         # Find the user by email.
         user = User.find_by_email(params[:email])
         if user.nil?
@@ -168,7 +174,7 @@ class AuthenticationController < ApplicationController
         # Create the user.
         user = User.create(email: token.email, password: params[:password], password_confirmation: params[:password_confirmation])
         if user.errors.any?
-            @error = user.errors.full_messages.join('\n')
+            @errors = user.errors.full_messages.join('\n')
             return render 'register_remainder', status: :bad_request
         end
 
@@ -187,7 +193,7 @@ class AuthenticationController < ApplicationController
     end
 
     def email_change_token_click
-        token = EmailChangeRequest.resolve_token!(params[:token])
+        token = UserEmailUpdateRequest.resolve_token!(params[:token])
         token.user.update(email: token.email)
         if token.user.errors.any?
             # Render the first error.

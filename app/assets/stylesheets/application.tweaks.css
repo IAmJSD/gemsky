@@ -1,0 +1,18 @@
+a {
+    color: #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+    a {
+        color: #67c8fc;
+    }
+}
+
+.unstyled {
+    color: inherit;
+}
+
+.paginator:not(:empty) {
+    padding-top: 1em;
+    text-align: center;
+}

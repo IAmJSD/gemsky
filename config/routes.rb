@@ -17,5 +17,5 @@ Rails.application.routes.draw do
   post "register", to: "authentication#register_enter_email_post"
   get "register/:token", to: "authentication#register_remainder"
   post "register/:token", to: "authentication#register_remainder_post"
-  get "email/update/:token", to: "authentication#email_update_token_click"
+  get "email/update/:token", to: "authentication#email_change_token_click"
 end

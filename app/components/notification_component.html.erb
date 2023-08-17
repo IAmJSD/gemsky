@@ -1,0 +1,7 @@
+<div class="p-3 my-4 rounded-lg text-white <%= pick_color %>">
+    <ul>
+        <% @body.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+    </ul>
+</div>

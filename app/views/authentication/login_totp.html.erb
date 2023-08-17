@@ -1,0 +1,31 @@
+<%= render FormHeaderComponent.new(
+    title: 'One more thing!',
+    description: 'Please enter your TOTP token below.',
+) %>
+
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= form_with method: :patch, data: {turbo: false} do |form| %>
+        <% unless @error.nil? %>
+            <%= render NotificationComponent.new(
+                type: 'error',
+                body: [@error],
+            ) %>
+        <% end %>
+
+        <%= form.hidden_field :half_token, value: params[:half_token] %>
+
+        <%= render InputComponent.new(
+            name: 'totp_code',
+            label: 'Authenticator or Backup Code',
+        ) %>
+
+        <div class="mt-5 text-center">
+            <%= render ButtonComponent.new(
+                name: 'submit',
+                label: 'Submit',
+                type: 'submit',
+                icon: 'check',
+            ) %>
+        </div>
+    <% end %>
+<% end %>

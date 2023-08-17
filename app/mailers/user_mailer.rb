@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
     def new_user_email_confirmation
         @email = params[:email]
         @token = params[:token]
-        mail(to: email, subject: 'Clearsky | New User Email Confirmation')
+        mail(to: @email, subject: 'Clearsky | New User Email Confirmation')
     end
 
     def email_update_request

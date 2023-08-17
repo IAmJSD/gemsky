@@ -1,0 +1,38 @@
+<%= render FormHeaderComponent.new(
+    title: 'Register',
+    description: 'Please enter your email address below to register.',
+) %>
+
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= form_with method: :post, data: {turbo: false} do %>
+        <% unless @error.nil? %>
+            <%= render NotificationComponent.new(
+                type: 'error',
+                body: [@error],
+            ) %>
+        <% end %>
+
+        <% if @maybe_successful %>
+            <%= render NotificationComponent.new(
+                type: 'success',
+                body: ['If the e-mail address is not attached to a Clearsky user, a link was sent to your email.'],
+            ) %>
+        <% end %>
+
+        <%= render InputComponent.new(
+            name: 'email',
+            label: 'E-mail Address',
+            type: 'email',
+            value: params[:email],
+        ) %>
+
+        <div class="mt-5 text-center">
+            <%= render ButtonComponent.new(
+                name: 'submit',
+                label: 'Submit',
+                type: 'submit',
+                icon: 'envelope',
+            ) %>
+        </div>
+    <% end %>
+<% end %>

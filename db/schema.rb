@@ -21,8 +21,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_064727) do
   end
 
   create_table "new_user_email_confirmations", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_new_user_email_confirmations_on_email"
+    t.index ["token"], name: "index_new_user_email_confirmations_on_token", unique: true
   end
 
   create_table "totp_recovery_codes", force: :cascade do |t|
@@ -40,7 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_064727) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["token"], name: "index_user_email_update_requests_on_token", unique: true
-    t.index ["user_id"], name: "index_user_email_update_requests_on_user_id", unique: true
+    t.index ["user_id"], name: "index_user_email_update_requests_on_user_id"
   end
 
   create_table "user_password_change_requests", force: :cascade do |t|

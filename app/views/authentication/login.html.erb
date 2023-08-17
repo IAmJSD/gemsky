@@ -1,0 +1,46 @@
+<%= render FormHeaderComponent.new(
+    title: 'Welcome to Clearsky!',
+    description: 'Please enter your email address and password or register to continue.',
+) %>
+
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= form_with method: :post, data: {turbo: false} do %>
+        <% unless @error.nil? %>
+            <%= render NotificationComponent.new(
+                type: 'error',
+                body: [@error],
+            ) %>
+        <% end %>
+
+        <%= render InputComponent.new(
+            name: 'email',
+            label: 'E-mail Address',
+            type: 'email',
+            value: params[:email],
+        ) %>
+
+        <%= render InputComponent.new(
+            name: 'password',
+            label: 'Password',
+            type: 'password',
+        ) %>
+
+        <p class="mt-6 text-center">
+            <%= link_to 'Forgot your password?', forgot_password_path %>
+        </p>
+
+        <p class="mt-2 text-center">
+            Don't have a user?
+            <%= link_to 'Register here!', register_path %>
+        </p>
+
+        <div class="mt-5 text-center">
+            <%= render ButtonComponent.new(
+                name: 'login',
+                label: 'Login',
+                type: 'submit',
+                icon: 'sign-in-alt',
+            ) %>
+        </div>
+    <% end %>
+<% end %>

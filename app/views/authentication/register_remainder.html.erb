@@ -1,0 +1,36 @@
+<%= render FormHeaderComponent.new(
+    title: 'Register',
+    description: 'Please enter the password you wish to use below.',
+) %>
+
+<%= render DesktopSmallerViewComponent.new do %>
+    <%= form_with method: :post, data: {turbo: false} do %>
+        <% unless @errors.nil? %>
+            <%= render NotificationComponent.new(
+                type: 'error',
+                body: @errors,
+            ) %>
+        <% end %>
+
+        <%= render InputComponent.new(
+            name: 'password',
+            label: 'Password',
+            type: 'password',
+        ) %>
+
+        <%= render InputComponent.new(
+            name: 'password_confirmation',
+            label: 'Password Confirmation',
+            type: 'password',
+        ) %>
+
+        <div class="mt-5 text-center">
+            <%= render ButtonComponent.new(
+                name: 'submit',
+                label: 'Create User',
+                type: 'submit',
+                icon: 'plus',
+            ) %>
+        </div>
+    <% end %>
+<% end %>
