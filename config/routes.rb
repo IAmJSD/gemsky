@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   # Defines the Turbo components (used when a component is too slow to load with the rest of the page).
   get 'components/user_list', to: 'turbo_components#user_list'
 
+  # Defines a VERY slim API for the AJAX calls.
+  get "ajax/notification_count", to: "ajax#notification_count"
+
   # Defines the homepage routes.
   get "home", to: "home#home"
   get "home/new", to: "home#new_user"

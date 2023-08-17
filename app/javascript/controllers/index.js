@@ -7,5 +7,8 @@ import { application } from "./application"
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import NotificationCountController from "./notification_count_controller"
+application.register("notification-count", NotificationCountController)
+
 import TwemojiController from "./twemoji_controller"
 application.register("twemoji", TwemojiController)

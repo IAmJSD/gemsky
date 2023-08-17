@@ -29,6 +29,10 @@ class BlueskyClient
         get.app_bsky_actor_getProfiles(actors: dids)
     end
 
+    def get_notification_unread_count
+        get.app_bsky_notification_getUnreadCount['count']
+    end
+
     private
 
     def get
