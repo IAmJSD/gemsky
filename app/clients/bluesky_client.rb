@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+class BlueskyError < StandardError
+    def initialize(error, message)
+        super("#{error}: #{message}")
+        @error = error
+        @message = message
+    end
+
+    attr_reader :error, :message
+end
+
 class BlueskyClient
     def initialize(identifier, token)
         @identifier = identifier
@@ -7,10 +17,18 @@ class BlueskyClient
     end
 
     def get_session
-        xrpc_client.get.com_atproto_server_getSession
+        get.com_atproto_server_getSession
     end
 
     private
+
+    def get
+        ErrorHandlerWrapper.new(xrpc_client.get)
+    end
+
+    def post
+        ErrorHandlerWrapper.new(xrpc_client.post)
+    end
 
     def token_outdated?
         return true if @auth_token.nil?
@@ -21,20 +39,32 @@ class BlueskyClient
         return @xrpc_client unless token_outdated?
 
         # Check if we should refresh.
-        session = nil
+        s = nil
         if @auth_token.nil?
             # Get a new token.
-            session = XRPC::Client.new('https://bsky.social').post.com_atproto_server_createSession(
+            s = XRPC::Client.new('https://bsky.social').post.com_atproto_server_createSession(
                 identifier: @identifier,
                 password: @token,
             )
         else
             # Refresh the token.
-            session = XRPC::Client.new('https://bsky.social', @refresh_token).post.com_atproto_server_refreshSession
+            s = XRPC::Client.new('https://bsky.social', @refresh_token).post.com_atproto_server_refreshSession
         end
-        @auth_token = session['accessJwt']
-        @refresh_token = session['refreshJwt']
+        @auth_token = s['accessJwt']
+        @refresh_token = s['refreshJwt']
         @token_expires_at = Time.now + 2.minutes
         @xrpc_client = XRPC::Client.new('https://bsky.social', @auth_token)
+    end
+end
+
+class ErrorHandlerWrapper
+    def initialize(client)
+        @client = client
+    end
+
+    def method_missing(method, *args, &block)
+        x = @client.send(method, *args, &block)
+        return x if x['error'].nil?
+        raise BlueskyError.new(x['error'], x['message'])
     end
 end

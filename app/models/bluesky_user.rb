@@ -25,6 +25,18 @@ class BlueskyUser < ApplicationRecord
             @model_instance = model_instance
         end
 
+        def method_missing(method, *args, &block)
+            self.do_request!(method, *args, &block)
+        rescue
+            # Remake the client.
+            @model_instance.regenerate_bluesky_client!
+
+            # Try again.
+            self.do_request!(method, *args, &block)
+        end
+
+        private
+
         def client
             # If it exists, unmarshal it.
             unless @model_instance.bluesky_client_marshalled.nil?
@@ -37,18 +49,6 @@ class BlueskyUser < ApplicationRecord
             # Recall this method.
             self.client
         end
-
-        def method_missing(method, *args, &block)
-            self.do_request!(method, *args, &block)
-        rescue
-            # Remake the client.
-            @model_instance.regenerate_bluesky_client!
-
-            # Try again.
-            self.do_request!(method, *args, &block)
-        end
-
-        private
 
         def do_request!(method, *args, &block)
             # Send the method to the client.
