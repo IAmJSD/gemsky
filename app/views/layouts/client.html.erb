@@ -22,6 +22,29 @@
                     <%= render SpinnerComponent.new %>
                 </div>
             </turbo-frame>
+
+            <%= render DividerComponent.new %>
+
+            <%= form_with method: :delete, url: '/logout' do %>
+                <button type="submit" class="w-full">
+                    <div class="flex">
+                        <div class="flex-col">
+                            <p class="text-4xl">
+                                <%= icon 'fa-solid', 'key' %>
+                            </p>
+                        </div>
+
+                        <div class="flex-col ml-4 my-auto text-left">
+                            <h3 class="text-lg font-medium">
+                                Logout
+                            </h3>
+                            <p class="text-sm">
+                                Logs out of your account.
+                            </p>
+                        </div>
+                    </div>
+                </button>
+            <% end %>
         <% end %>
     <% end %>
 
