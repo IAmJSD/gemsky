@@ -3,7 +3,7 @@
     <% if @type == 'submit' && !@href %> type="submit"<% end %>
     value="1"
     <% if @href %>href="<%= @href %>"<% end %>
-    class="px-3 py-2 rounded-lg <%= pick_color %>"
+    class="px-3 py-2 rounded-lg <%= pick_color %> <% if @full_width %>w-full<% end %>"
 >
     <% if @icon %><%= icon 'fa-solid', @icon %><% end %>
     <%= @label %>

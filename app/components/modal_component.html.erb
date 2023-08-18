@@ -1,0 +1,21 @@
+<dialog id="<%= @id %>" class="m-auto p-0" data-controller="dialog">
+    <div> <!-- DO NOT REMOVE: needed for webkit -->
+        <div class="bg-white dark:bg-gray-800 p-4 block w-full h-full dark:text-white">
+            <div class="flex mb-3">
+                <div class="flex-col">
+                    <%= @title %>
+                </div>
+
+                <div class="flex-grow text-right ml-6 mt-0">
+                    <form method="dialog">
+                        <button class="text-2xl mt-0" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <%= content %>
+        </div>
+    </div>
+</dialog>

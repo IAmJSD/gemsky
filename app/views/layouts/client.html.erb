@@ -1,2 +1,31 @@
+<% @no_mobile_margin = true %>
+<% @profile = @bluesky_user.bluesky_client.get_profile %>
 <%= inside_layout do %>
+    <div class="flex w-full">
+        <div class="flex-col hidden md:block">
+            <%= render partial: 'layouts/sidebar_desktop' %>
+        </div>
+
+        <div class="flex-grow flex-col md:ml-8">
+            <%= yield %>
+        </div>
+    </div>
+
+    <div class="block w-full md:hidden">
+        <%= render partial: 'layouts/sidebar_mobile' %>
+    </div>
+
+    <%= render ModalComponent.new(id: 'user_switch_modal', title: 'Switch User') do %>
+        <% render DesktopSmallerViewComponent.new do %>
+            <turbo-frame id="user_list" src="/components/user_list">
+                <div class="block mx-auto max-w-max">
+                    <%= render SpinnerComponent.new %>
+                </div>
+            </turbo-frame>
+        <% end %>
+    <% end %>
+
+    <%= render ModalComponent.new(id: 'skeet_composer_dialog', title: 'Compose Skeet') do %>
+        <%= render partial: 'skeet_composer' %>
+    <% end %>
 <% end %>

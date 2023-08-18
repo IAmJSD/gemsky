@@ -1,0 +1,66 @@
+<div class="mx-auto y-full">
+    <h1 class="text-2xl font-bold text-center">
+        Clearsky
+    </h1>
+
+    <ul class="text-xl">
+        <li class="my-6 <% if @highlights == :home %> font-bold <% end %>">
+            <a href="/home/<%= @bluesky_user.did %>" class="unstyled">
+                <%= icon 'fa-solid', 'house' %> <span class="ml-2">
+                    Home
+                </span>
+            </a>
+        </li>
+
+        <li class="my-6 <% if @highlights == :notifications %> font-bold <% end %>">
+            <a href="/home/<%= @bluesky_user.did %>/notifications" class="unstyled">
+                <%= icon 'fa-solid', 'bell' %> <span class="ml-2">
+                    Notifications
+                </span>
+            </a>
+        </li>
+
+        <li class="my-6 <% if @highlights == :settings %> font-bold <% end %>">
+            <a href="/home/<%= @bluesky_user.did %>/settings" class="unstyled">
+                <%= icon 'fa-solid', 'cog' %> <span class="ml-2">
+                    Settings
+                </span>
+            </a>
+        </li>
+    </ul>
+
+    <%= render DividerComponent.new %>
+
+    <form class="mt-4 text-center" data-controller="dialog-toggle" aria-controls="skeet_composer_dialog">
+        <%= render ButtonComponent.new(
+            name: 'submit',
+            label: 'Compose Skeet',
+            type: 'submit',
+            icon: 'feather',
+            full_width: true,
+        ) %>
+    </form>
+
+    <form class="mt-5" data-controller="dialog-toggle" aria-controls="user_switch_modal">
+        <button type="submit">
+            <div class="flex" data-controller="twemoji">
+                <div class="flex-col">
+                    <img
+                        class="w-12 h-12 rounded-full"
+                        src="<%= @profile['avatar'] ? @profile['avatar'] : '/default_pfp.png' %>"
+                        alt=""
+                    />
+                </div>
+
+                <div class="flex-col ml-3 my-auto text-left">
+                    <h3 class="text-lg font-medium">
+                        <%= @profile['displayName'] %>
+                    </h3>
+                    <p class="text-sm">
+                        <%= @profile['handle'] %>
+                    </p>
+                </div>
+            </div>
+        </button>
+    </form>
+</div>

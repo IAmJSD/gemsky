@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+    before_action :validate_did_permissions!, only: [:home_did]
+
     def index
         redirect_to '/home'
     end
@@ -59,5 +61,10 @@ class HomeController < ApplicationController
                 redirect_to "/home/#{bluesky_user.did}"
             end
         end
+    end
+
+    def home_did
+        @highlights = :home
+        render :home_did, layout: 'client'
     end
 end

@@ -4,6 +4,12 @@
 
 import { application } from "./application"
 
+import DialogController from "./dialog_controller"
+application.register("dialog", DialogController)
+
+import DialogToggleController from "./dialog_toggle_controller"
+application.register("dialog-toggle", DialogToggleController)
+
 import NotificationCountController from "./notification_count_controller"
 application.register("notification-count", NotificationCountController)
 

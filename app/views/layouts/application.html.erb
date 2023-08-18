@@ -18,7 +18,7 @@
   </head>
 
   <body class="dark:text-white dark:bg-gray-900">
-    <main class="container mx-auto mt-28 px-5">
+    <main class="container mx-auto <% unless @no_mobile_margin %>mt-8<% end %> md:mt-28 px-5">
       <%= yield %>
     </main>
   </body>
