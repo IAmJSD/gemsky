@@ -9,12 +9,12 @@ class HomeController < ApplicationController
 
         # If there are none, redirect to /home/new.
         if @bluesky_users.length == 0
-            redirect_to '/home/new'
+            return redirect_to '/home/new'
         end
 
         # If it is just one, redirect to /home/:did.
         if @bluesky_users.length == 1
-            redirect_to "/home/#{@bluesky_users[0].did}"
+            return redirect_to "/home/#{@bluesky_users[0].did}"
         end
 
         # Render the user picker.
