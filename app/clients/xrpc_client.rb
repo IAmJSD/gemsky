@@ -34,12 +34,15 @@ class XrpcRequestor
             url.query = URI.encode_www_form(kwargs)
             request = Net::HTTP::Get.new(url)
         else
-            # Turn it into a JSON body.
+            # Turn it into a POST body.
             request = Net::HTTP::Post.new(url)
-            request.body = kwargs.to_json
+            unless kwargs.empty?
+                # Turn the body into JSON.
+                request.body = kwargs.to_json
 
-            # Set the content type.
-            request['Content-Type'] = 'application/json'
+                # Set the content type.
+                request['Content-Type'] = 'application/json'
+            end
         end
 
         # Set the token if not nil.
@@ -61,7 +64,7 @@ class XrpcRequestor
             end
 
             # Raise the error.
-            raise BlueskyError.new(json['error'], json['message'])
+            raise BlueskyError.new(json['error'], json['message'], response.code.to_i)
         end
 
         # Parse the JSON.

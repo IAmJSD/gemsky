@@ -40,7 +40,10 @@ class BlueskyUser < ApplicationRecord
 
         def method_missing(method, *args, **kwargs, &block)
             self.do_request!(method, *args, **kwargs, &block)
-        rescue
+        rescue BlueskyError => e
+            # Log that we got an error.
+            Rails.logger.error("Bluesky error: #{e.error}: #{e.message} - remaking client!")
+
             # Remake the client.
             @model_instance.regenerate_bluesky_client!
 
