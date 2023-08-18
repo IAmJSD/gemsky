@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-class BlueskyError < StandardError
-    def initialize(error, message)
-        super("#{error}: #{message}")
-        @error = error
-        @message = message
-    end
-
-    attr_reader :error, :message
-end
-
 class BlueskyClient
     def initialize(identifier, token)
         @identifier = identifier
@@ -17,31 +7,23 @@ class BlueskyClient
     end
 
     def get_session
-        get.com_atproto_server_getSession
+        xrpc_client.get.com_atproto_server_getSession
     end
 
     def get_profile(did: nil)
         did = @identifier if did.nil?
-        get.app_bsky_actor_getProfile(actor: did)
+        xrpc_client.get.app_bsky_actor_getProfile(actor: did)
     end
 
     def get_profiles(*dids)
-        get.app_bsky_actor_getProfiles(actors: dids)
+        xrpc_client.get.app_bsky_actor_getProfiles(actors: dids)
     end
 
     def get_notification_unread_count
-        get.app_bsky_notification_getUnreadCount['count']
+        xrpc_client.get.app_bsky_notification_getUnreadCount['count']
     end
 
     private
-
-    def get
-        ErrorHandlerWrapper.new(xrpc_client.get)
-    end
-
-    def post
-        ErrorHandlerWrapper.new(xrpc_client.post)
-    end
 
     def token_outdated?
         return true if @auth_token.nil?
@@ -55,29 +37,17 @@ class BlueskyClient
         s = nil
         if @auth_token.nil?
             # Get a new token.
-            s = XRPC::Client.new('https://bsky.social').post.com_atproto_server_createSession(
+            s = XrpcClient.new('https://bsky.social').post.com_atproto_server_createSession(
                 identifier: @identifier,
                 password: @token,
             )
         else
             # Refresh the token.
-            s = XRPC::Client.new('https://bsky.social', @refresh_token).post.com_atproto_server_refreshSession
+            s = XrpcClient.new('https://bsky.social', @refresh_token).post.com_atproto_server_refreshSession
         end
         @auth_token = s['accessJwt']
         @refresh_token = s['refreshJwt']
         @token_expires_at = Time.now + 2.minutes
-        @xrpc_client = XRPC::Client.new('https://bsky.social', @auth_token)
-    end
-end
-
-class ErrorHandlerWrapper
-    def initialize(client)
-        @client = client
-    end
-
-    def method_missing(method, *args, **kwargs, &block)
-        x = @client.send(method, *args, **kwargs, &block)
-        return x if x['error'].nil?
-        raise BlueskyError.new(x['error'], x['message'])
+        @xrpc_client = XrpcClient.new('https://bsky.social', @auth_token)
     end
 end

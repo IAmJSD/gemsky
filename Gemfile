@@ -73,11 +73,8 @@ group :development do
   gem "web-console"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
+  gem "rack-mini-profiler"
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
-# Defines xrpc which we need to communicate with Bluesky.
-gem "xrpc", "~> 0.1.6"
