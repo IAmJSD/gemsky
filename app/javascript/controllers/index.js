@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ContentWarningController from "./content_warning_controller"
+application.register("content-warning", ContentWarningController)
+
 import DialogController from "./dialog_controller"
 application.register("dialog", DialogController)
 

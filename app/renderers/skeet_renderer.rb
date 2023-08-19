@@ -229,15 +229,18 @@ class SkeetRenderer
         # Get the HTML for the content warning.
         closing = '</div></div>'
         html = "<div data-controller=\"content-warning\">
-<p>#{sanitized} <form data-action=\"submit->content-warning#toggle\"><button
-    aria-controls=\"#{@skeet_id}_content\"
-    aria-expanded=\"false\"
-    aria-haspopup=\"true\"
-    type=\"button\"
-    data-content-warning-target=\"button\"
->
-    Show Content
-</button></form></p>
+<form data-action=\"submit->content-warning#toggle\">
+    <p>#{sanitized} <button
+        style=\"background-color: white; border: 1px solid black; border-radius: 5px; margin-left: 0.1rem; padding: 0.3rem; color: black;\"
+        aria-controls=\"#{@skeet_id}_content\"
+        aria-expanded=\"false\"
+        aria-haspopup=\"true\"
+        type=\"submit\"
+        data-content-warning-target=\"button\"
+    >
+        Show Content
+    </button></p>
+</form>
 <div style=\"display: none;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
         return html, closing, match.post_match
     end
