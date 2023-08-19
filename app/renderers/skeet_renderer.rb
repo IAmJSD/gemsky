@@ -11,13 +11,13 @@ class GIFURLParser
 end
 
 class SkeetRenderer
-    CONTENT_WARNING = /^([ct]w: *.+)\n/mi
+    CONTENT_WARNING = /^([ct]w: *.+?)\n/mi
     SHOULD_TRUNCATE = /^(.{20}).+/
     MANY_MULTIPLE_NEWLINES = /\n{5,}/m
-    BOLD_TEXT = /\*\*[^\n]+\*\*/
-    ITALIC_TEXT = /\*[^\n]+\*/
-    UNDERLINE_TEXT = /_[^\n]+_/
-    STRIKETHROUGH_TEXT = /~~[^\n]+~~/
+    BOLD_TEXT = /\*\*([^\n*]+?)\*\*/
+    ITALIC_TEXT = /\*([^\n]+?)\*/
+    UNDERLINE_TEXT = /_([^\n]+?)_/
+    STRIKETHROUGH_TEXT = /~~([^\n]+?)~~/
 
     ALLOWED_URL_SCHEMES = %w[http https mailto ftp].freeze
     TENOR_GIF_PATH = /^\/view\/.+/
@@ -74,7 +74,7 @@ class SkeetRenderer
     def scan_with_index(string, regex)
         res = []
         string.scan(regex) do |c|
-            res << [c, $~.offset(0)[0]]
+            res << [$&, $~.offset(0)[0]]
         end
         res
     end
@@ -93,7 +93,6 @@ class SkeetRenderer
 
         # Get the start fragment.
         start_fragment = "#{parsed.scheme}://#{parsed.host}"
-        start_fragment += ":#{parsed.port}" if parsed.port
 
         # Get the truncatable fragment.
         truncatable_fragment = parsed.path
@@ -140,7 +139,7 @@ class SkeetRenderer
             truncatable_fragment = truncatable_fragment.gsub(SHOULD_TRUNCATE, '\1…')
 
             # Build the HTML element.
-            html = "<a href=\"#{link}\">#{start_fragment}#{truncatable_fragment}</a>"
+            html = "<a href=\"#{link}\">#{start_fragment}#{truncatable_fragment}</a>".html_safe
 
             # Replace the link with the HTML element without mutating the string.
             content_html = content_html[0...index] + html + content_html[index + link.length..-1]
@@ -162,49 +161,68 @@ class SkeetRenderer
         [content_html, no_mutation_ranges]
     end
 
-    def run_parse(content_html, regex, part_len, tag, no_mutation_ranges)
-        # Scan the content HTML for the regex.
-        html_results = scan_with_index(content_html, regex)
-
-        # Loop through the results.
-        html_results.each do |html_result|
-            # Get the HTML and the index.
-            html, index = html_result
-
-            # Check if the index is in a no mutation range.
-            next if no_mutation_ranges.any? do |no_mutation_range|
-                index >= no_mutation_range[0] && index < no_mutation_range[1]
-            end
-
-            # Replace the HTML with it wrapped in the tag.
-            tagged_html = "<#{tag}>#{html[part_len..-part_len]}</#{tag}>"
-
-            # Replace the HTML without mutating the string.
-            content_html = content_html[0...index] + tagged_html + content_html[index + tagged_html.length..-1]
-
-            # Add the difference between the HTML and the tag to every item in the array after this one.
-            difference = tagged_html.length - html.length
-            html_results.each do |html_result_b|
-                html_result_b[1] += difference
-            end
-
-            # Add the difference to every item in the no mutation ranges after this one.
-            no_mutation_ranges.each do |no_mutation_range|
-                no_mutation_range[0] += difference if no_mutation_range[0] > index
-                no_mutation_range[1] += difference if no_mutation_range[1] > index
-            end
+    class NoFormatting
+        def initialize(text)
+            @text = text
         end
 
-        # Return the content HTML.
-        content_html
+        def to_s
+            @text
+        end
     end
 
     def handle_formatting(content_html, no_mutation_ranges)
-        # Call the above method a bunch of times.
-        content_html = run_parse(content_html, BOLD_TEXT, 2, 'strong', no_mutation_ranges)
-        content_html = run_parse(content_html, ITALIC_TEXT, 1, 'em', no_mutation_ranges)
-        content_html = run_parse(content_html, UNDERLINE_TEXT, 1, 'u', no_mutation_ranges)
-        run_parse(content_html, STRIKETHROUGH_TEXT, 2, 's', no_mutation_ranges)
+        # Split the content HTML into an array of bits. Put
+        # the bits that should not be formatted into the array with
+        # the NoFormatting class.
+        bits = []
+        last_end = 0
+        no_mutation_ranges.each_with_index do |range, index|
+            # Get the start and end of the range.
+            start, end_ = range
+
+            # Get the text.
+            text = content_html[start...end_]
+
+            # Add the in-between text to bits.
+            inbetween = content_html[last_end...start]
+            bits << inbetween unless inbetween.empty?
+
+            # Add the text to bits.
+            bits << NoFormatting.new(text) unless text.empty?
+
+            # Set last end to the end of the range.
+            last_end = end_
+        end
+
+        # Set the remainder to everything after the last range.
+        bits << content_html[last_end..-1]
+
+        # Go through the bits.
+        bits.each_with_index do |bit, index|
+            next if bit.is_a? NoFormatting
+
+            # Handle bold.
+            bit = bit.gsub(BOLD_TEXT, '<b>\1</b>')
+
+            # Handle italic.
+            bit = bit.gsub(ITALIC_TEXT, '<i>\1</i>')
+
+            # Handle underline.
+            bit = bit.gsub(UNDERLINE_TEXT, '<u>\1</u>')
+
+            # Handle strikethrough.
+            bit = bit.gsub(STRIKETHROUGH_TEXT, '<s>\1</s>')
+
+            # Replace the bit.
+            bits[index] = bit
+        end
+
+        # Transform the bits into a string.
+        bits = bits.map(&:to_s).join
+
+        # Return the bits.
+        bits.html_safe
     end
 
     def handle_newlines(content_html)
@@ -241,7 +259,7 @@ class SkeetRenderer
         Show Content
     </button></p>
 </form>
-<div style=\"display: none;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
+<div style=\"display: none; padding-top: 0.5rem;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
         return html, closing, match.post_match
     end
 end
