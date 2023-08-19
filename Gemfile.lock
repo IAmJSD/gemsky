@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/WebScaleSoftwareLtd/minigun.git
+  revision: 806a86795466e2b80b5a82706682c626d3cdf2b8
+  specs:
+    minigun (0.1.0)
+      rb_sys (~> 0.9.39)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -162,6 +169,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    rb_sys (0.9.81)
     reline (0.3.7)
       io-console (~> 0.5)
     rotp (6.2.2)
@@ -225,6 +233,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   memory_profiler
+  minigun!
   puma (~> 5.0)
   rack-mini-profiler
   rails (~> 7.0.7)

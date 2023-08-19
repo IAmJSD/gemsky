@@ -84,3 +84,6 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+# Add Minigun for faster http. We pull from github right now since it is a very immature library.
+gem "minigun", github: "WebScaleSoftwareLtd/minigun"
