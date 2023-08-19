@@ -30,4 +30,7 @@ Rails.application.routes.draw do
   get "home/new", to: "home#new_user"
   post "home/new", to: "home#new_user_post"
   get "home/:did", to: "home#home_did"
+
+  # Handle post viewing.
+  get "post/:identifier/:post_id", to: "post#view", constraints: { identifier: /[^\/]+/, post_id: /[^\/]+/ }
 end

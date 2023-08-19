@@ -2,6 +2,7 @@
 
 Clearsky's repo. This will have more information in the future.
 
+The Clearsky user used for anonymous authentication is `anonymousauth@webscalesoftware.ltd`. If this user is signed up and has a Bluesky user connected, it will be used for logging in. If not, the ability to anonymously view/embed posts will be removed. You can just sign up to this user locally in development.
 
 ## Mission
 Feature full ATProtocol Client with A11Y Compliance and Usability at its heart

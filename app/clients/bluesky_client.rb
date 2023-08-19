@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# All anonymous methods are class methods.
 class BlueskyClient
+    DID = /^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._-]$/i
+
     def initialize(identifier, token)
         @identifier = identifier
         @token = token
@@ -23,11 +26,24 @@ class BlueskyClient
         xrpc_client.get.app_bsky_notification_getUnreadCount['count']
     end
 
+    def self.resolve_handle(handle)
+        return handle if handle.match?(DID)
+        anonymous_xrpc_client.get.com_atproto_identity_resolveHandle(handle: handle)['did']
+    end
+
+    def get_post_thread(uri)
+        xrpc_client.get.app_bsky_feed_getPostThread(uri: uri)
+    end
+
     private
 
     def token_outdated?
         return true if @auth_token.nil?
         Time.now > @token_expires_at
+    end
+
+    def self.anonymous_xrpc_client
+        XrpcClient.new('https://bsky.social')
     end
 
     def xrpc_client

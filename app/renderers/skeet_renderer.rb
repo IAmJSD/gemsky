@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-class GIFURLParser
-    def initialize(url)
-        @url = url
-    end
-
-    def parse
-        # TODO
-    end
-end
-
 class SkeetRenderer
     CONTENT_WARNING = /^([ct]w: *.+?)\n/mi
     SHOULD_TRUNCATE = /^(.{20}).+/
@@ -29,9 +19,9 @@ class SkeetRenderer
         @skeet_id = ERB::Util.html_escape(skeet_id)
     end
 
-    def gif
-        return nil unless @last_gif
-        GIFURLParser.new(@last_gif).parse
+    def media_url
+        return nil unless @last_media
+        @last_media
     end
 
     def render(&block)
@@ -41,8 +31,8 @@ class SkeetRenderer
         # Parse the text to HTML first before we do anything else.
         content_html = ERB::Util.html_escape(text)
 
-        # Append <p> to the HTML.
-        html += '<p>'
+        # Append the body information to the HTML.
+        html += '<div class="skeet-content">'
 
         # Handle links.
         content_html, no_mutation_ranges = handle_links(content_html)
@@ -53,10 +43,10 @@ class SkeetRenderer
         # Handle newlines.
         content_html = handle_newlines(content_html)
 
-        # Close the paragraph.
-        html += content_html + '</p>'
+        # Close the div.
+        html += content_html + '</div>'
 
-        # Call the block with the GIF result.
+        # Call the block with ourselves.
         res = block.call(self) if block
 
         # If the block returned something, add it to the HTML.
@@ -101,17 +91,17 @@ class SkeetRenderer
         # Check if this is a tenor or giphy link.
         case parsed.host
         when 'tenor.com'
-            is_gif = parsed.path.match(TENOR_GIF_PATH)
+            is_media = parsed.path.match(TENOR_GIF_PATH)
         when 'media.giphy.com'
-            is_gif = parsed.path.match(GIPHY_MEDIA_GIF_PATH)
+            is_media = parsed.path.match(GIPHY_MEDIA_GIF_PATH)
         when 'giphy.com'
-            is_gif = parsed.path.match(GIPHY_GIF_PATH)
+            is_media = parsed.path.match(GIPHY_GIF_PATH)
         else
-            is_gif = false
+            is_media = false
         end
 
-        # Return the parsed URL, the start fragment, the truncatable fragment, and the GIF status.
-        [parsed, start_fragment, truncatable_fragment, is_gif]
+        # Return the parsed URL, the start fragment, the truncatable fragment, and the media status.
+        [parsed, start_fragment, truncatable_fragment, is_media]
     end
 
     def handle_links(content_html)
@@ -127,7 +117,7 @@ class SkeetRenderer
             link, index = link_a
 
             # Try to parse the link.
-            parsed, start_fragment, truncatable_fragment, is_gif = handle_spooky_url(link)
+            parsed, start_fragment, truncatable_fragment, is_media = handle_spooky_url(link)
 
             # If it was not parsed, add the link start and end to the no mutation ranges.
             unless parsed
@@ -153,8 +143,8 @@ class SkeetRenderer
             # Add to the no mutation ranges.
             no_mutation_ranges << [index, index + html.length]
 
-            # If this is a GIF, set @last_gif to this.
-            @last_gif = link if is_gif
+            # If this is media, set @last_mmedia to this.
+            @last_media = link if is_media
         end
 
         # Return the content HTML and the no mutation ranges.
@@ -226,11 +216,14 @@ class SkeetRenderer
     end
 
     def handle_newlines(content_html)
+        # Remove newlines from the start.
+        content_html = content_html.gsub(/\A\n+/, '')
+
         # Replace multiple newlines with a couple newlines.
         content_html = content_html.gsub(MANY_MULTIPLE_NEWLINES, '\n\n')
 
-        # Replace newlines with new paragraphs.
-        content_html = content_html.gsub(/\n/, '</p><p>')
+        # Replace newlines with brs.
+        content_html = content_html.gsub(/\n/, '<br>')
 
         # Return the content HTML.
         content_html
@@ -248,7 +241,7 @@ class SkeetRenderer
         closing = '</div></div>'
         html = "<div data-controller=\"content-warning\">
 <form data-action=\"submit->content-warning#toggle\">
-    <p>#{sanitized} <button
+    <p class=\"skeet-content\">#{sanitized} <button
         style=\"background-color: white; border: 1px solid black; border-radius: 5px; margin-left: 0.1rem; padding: 0.3rem; color: black;\"
         aria-controls=\"#{@skeet_id}_content\"
         aria-expanded=\"false\"
@@ -259,7 +252,7 @@ class SkeetRenderer
         Show Content
     </button></p>
 </form>
-<div style=\"display: none; padding-top: 0.5rem;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
+<div style=\"display: none; margin-top: 1rem;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
         return html, closing, match.post_match
     end
 end
