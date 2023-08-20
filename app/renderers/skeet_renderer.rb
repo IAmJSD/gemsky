@@ -13,6 +13,8 @@ class SkeetRenderer
     TENOR_GIF_PATH = /^\/view\/.+/
     GIPHY_GIF_PATH = /^\/gifs\/.+/
     GIPHY_MEDIA_GIF_PATH = /^\/media\/.+/
+    YOUTUBE_SHORT_PATH = /^\/[a-zA-Z0-9_-]{11}$/
+    TWITCH_PATH = /^(\/[a-zA-Z0-9][\w]{2,24})|(\/videos\/[0-9]+)$/
 
     def initialize(text_content, skeet_id)
         @text_content = text_content
@@ -96,6 +98,12 @@ class SkeetRenderer
             is_media = parsed.path.match(GIPHY_MEDIA_GIF_PATH)
         when 'giphy.com'
             is_media = parsed.path.match(GIPHY_GIF_PATH)
+        when 'youtube.com', 'www.youtube.com'
+            is_media = parsed.path == '/watch'
+        when 'youtu.be'
+            is_media = parsed.path.match(YOUTUBE_SHORT_PATH)
+        when 'twitch.tv', 'www.twitch.tv'
+            is_media = parsed.path.match(TWITCH_PATH)
         else
             is_media = false
         end
