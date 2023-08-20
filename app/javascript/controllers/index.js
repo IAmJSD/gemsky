@@ -13,6 +13,9 @@ application.register("dialog", DialogController)
 import DialogToggleController from "./dialog_toggle_controller"
 application.register("dialog-toggle", DialogToggleController)
 
+import DidSwitchRemapperController from "./did_switch_remapper_controller"
+application.register("did-switch-remapper", DidSwitchRemapperController)
+
 import NotificationCountController from "./notification_count_controller"
 application.register("notification-count", NotificationCountController)
 
