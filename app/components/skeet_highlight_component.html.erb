@@ -21,17 +21,5 @@
         </div>
     </a>
 
-    <%= SkeetRenderer.new(@skeet_body['record']['text'], skeet_hash).render do |renderer| %>
-        <%# This is cursed because of how the renderer works but speed innit. %>
-        <% if @skeet_body['record']['embed'].present? %>
-            <% render SkeetPostEmbedComponent.new(embed: @skeet_body['record']['embed']) %>
-        <% elsif renderer.media_url %>
-            <%
-                '<turbo-frame id="skeet-media-' +
-                    skeet_hash + '" src="' +
-                    make_media_url_frame(renderer.media_url) +
-                    '"></turbo-frame>'
-            %>
-        <% end %>
-    <% end %>
+    <%= render SkeetPostContentsComponent.new(skeet_body: @skeet_body) %>
 </div>
