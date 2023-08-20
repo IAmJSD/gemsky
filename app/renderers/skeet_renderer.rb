@@ -11,9 +11,9 @@ class SkeetRenderer
 
     ALLOWED_URL_SCHEMES = %w[http https mailto ftp].freeze
     TENOR_GIF_PATH = /^\/view\/.+/
-    GIPHY_GIF_PATH = /^\/gifs\/.+/
-    GIPHY_MEDIA_GIF_PATH = /^\/media\/.+/
+    GIPHY_GIF_PATH = /^\/gifs\/(.+-)+.+$/
     YOUTUBE_SHORT_PATH = /^\/[a-zA-Z0-9_-]{11}$/
+    YOUTUBE_VIDEO_ID = /^[a-zA-Z0-9_-]{11}$/
     TWITCH_PATH = /^(\/[a-zA-Z0-9][\w]{2,24})|(\/videos\/[0-9]+)$/
 
     def initialize(text_content, skeet_id)
@@ -94,13 +94,28 @@ class SkeetRenderer
         case parsed.host
         when 'tenor.com'
             is_media = parsed.path.match(TENOR_GIF_PATH)
-        when 'media.giphy.com'
-            is_media = parsed.path.match(GIPHY_MEDIA_GIF_PATH)
         when 'giphy.com'
             is_media = parsed.path.match(GIPHY_GIF_PATH)
         when 'youtube.com', 'www.youtube.com'
             is_media = parsed.path == '/watch'
-        when 'youtu.be'
+            if is_media
+                # Parse the query.
+                query = CGI.parse(parsed.query)
+
+                # Check if v is in the query.
+                v = query['v']
+                if v
+                    # Get the first v.
+                    v = v.first
+
+                    # Check if it is a valid video ID.
+                    is_media = v.match(YOUTUBE_VIDEO_ID)
+                else
+                    # Not a video ID.
+                    is_media = false
+                end
+            end
+        when 'youtu.be', 'www.youtu.be'
             is_media = parsed.path.match(YOUTUBE_SHORT_PATH)
         when 'twitch.tv', 'www.twitch.tv'
             is_media = parsed.path.match(TWITCH_PATH)

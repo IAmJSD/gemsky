@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   # Defines the Turbo components (used when a component is too slow to load with the rest of the page).
   get 'components/user_list', to: 'turbo_components#user_list'
+  get 'components/skeet_media_frame/:frame_id/:url', to: 'turbo_components#skeet_media_frame', constraints: { frame_id: /[^\/]+/, url: /[^\/]+/ }
 
   # Defines a VERY slim API for the AJAX calls.
   get "ajax/notification_count/:did", to: "ajax#notification_count"

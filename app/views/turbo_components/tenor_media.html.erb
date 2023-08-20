@@ -1,0 +1,11 @@
+<turbo-frame id="<%= params[:frame_id] %>">
+    <div class="mt-4">
+        <img alt="<%= @media_alt %>" class="h-48" src="<%= @media_url %>" />
+
+        <p class="mt-3">
+            <a href="<%= @tenor_url %>" target="_blank" rel="noopener noreferrer" class="unstyled">
+                <%= icon 'fa-solid', 'link' %> View on Tenor
+            </a>
+        </p>
+    </div>
+</turbo-frame>

@@ -234,6 +234,7 @@ DEPENDENCIES
   jsbundling-rails
   memory_profiler
   minigun!
+  nokogiri
   puma (~> 5.0)
   rack-mini-profiler
   rails (~> 7.0.7)

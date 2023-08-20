@@ -87,3 +87,6 @@ end
 
 # Add Minigun for faster http. We pull from github right now since it is a very immature library.
 gem "minigun", github: "WebScaleSoftwareLtd/minigun"
+
+# Add nokogiri for parsing html.
+gem "nokogiri"
