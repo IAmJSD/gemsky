@@ -76,6 +76,7 @@ class BlueskyUser < ApplicationRecord
 
             # Save the model instance.
             @model_instance.save!
+            @model_instance.reload
 
             # Return the result.
             res
