@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
             bluesky_user_editors = self.user.linked_bluesky_users
 
             # Try to find the bluesky user.
-            @bluesky_user = bluesky_user_editors.find_by(did: did)
+            @bluesky_user = bluesky_user_editors.find { |bluesky_user| bluesky_user.did == did }
 
             # If we found it, return.
             return unless @bluesky_user.nil?

@@ -18,6 +18,6 @@ class User < ApplicationRecord
     end
 
     def linked_bluesky_users
-        BlueskyUser.joins(:bluesky_user_editors).where(bluesky_user_editors: { user_id: self.id })
+        BlueskyUser.joins(:bluesky_user_editors).where(bluesky_user_editors: { user_id: self.id }).all
     end
 end
