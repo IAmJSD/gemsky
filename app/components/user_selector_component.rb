@@ -20,13 +20,15 @@ class UserSelectorComponent < ViewComponent::Base
   def gracefully_handle_user(user)
     # Get the user's profile.
     user.bluesky_client.get_profile
-  rescue
+  rescue BlueskyError => e
+    Rails.logger.error("Failed to get DID: #{e.error}: #{e.message} - ttempting with another token if possible!")
     begin
       # Try to get the user's profile with some other client.
       another_user = @users.find { |u| u != user }
       another_user.bluesky_client.get_profile(user.did)
-    rescue => e
+    rescue BlueskyError => e
       # Return just the did.
+      Rails.logger.error("Failed to get DID: #{e.error}: #{e.message} - giving up!")
       { 'did' => user.did }
     end
   end
