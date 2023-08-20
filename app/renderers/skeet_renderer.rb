@@ -129,7 +129,7 @@ class SkeetRenderer
             truncatable_fragment = truncatable_fragment.gsub(SHOULD_TRUNCATE, '\1…')
 
             # Build the HTML element.
-            html = "<a href=\"#{link}\">#{start_fragment}#{truncatable_fragment}</a>".html_safe
+            html = "<a target=\"_blank\" href=\"#{link}\">#{start_fragment}#{truncatable_fragment}</a>".html_safe
 
             # Replace the link with the HTML element without mutating the string.
             content_html = content_html[0...index] + html + content_html[index + link.length..-1]
