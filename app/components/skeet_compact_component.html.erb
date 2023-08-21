@@ -14,12 +14,18 @@
             </a>
         </div>
 
-        <div class="flex-col ml-4">
-            <p class="mb-1">
-                <a href="/profile/<%= profile['did'] %>" class="unstyled">
-                    <%= profile['displayName'] %> <span class="text-gray-700 dark:text-gray-400"><%= profile['handle'] %></span>
-                </a>
-            </p>
+        <div class="flex-col flex-grow ml-4">
+            <div class="mb-1 flex w-full">
+                <p class="flex-col">
+                    <a href="/profile/<%= profile['did'] %>" class="unstyled">
+                        <%= profile['displayName'] %> <span class="text-gray-700 dark:text-gray-400"><%= profile['handle'] %></span>
+                    </a>
+                </p>
+
+                <p class="flex-col flex-grow text-right text-gray-700 dark:text-gray-400">
+                    <%= time_ago_shorthand @skeet_body['record']['createdAt'] %>
+                </p>
+            </div>
 
             <%# TODO: add the authed param %>
             <a href="/post/<%= profile['did'] %>/<%= @skeet_body['uri'].split('/').last %>" class="unstyled">
