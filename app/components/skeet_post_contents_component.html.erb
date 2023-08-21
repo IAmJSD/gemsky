@@ -12,4 +12,68 @@
             %>
         <% end %>
     <% end %>
+
+    <div class="<% if @compact %> mt-2 <% else %> mt-3 <% end %>">
+        <turbo-frame id="skeet-actions-<%= skeet_hash %>">
+            <div class="flex">
+                <div class="flex-col">
+                    <%= skeet_action(:reply, {
+                        controller: 'composer',
+                        uri: @skeet_body['uri'],
+                        cid: @skeet_body['cid'],
+                        did: @skeet_body['author']['did'],
+                        action: 'reply',
+                    }) do %>
+                        <span
+                            class="text-neutral-600 dark:text-neutral-400"
+                            aria-label="<%= pluralize(@skeet_body['replyCount'], 'reply') %>"
+                        >
+                            <%= icon 'fa-solid', 'comment' %> <%= @skeet_body['replyCount'] %>
+                        </span>
+                    <% end %>
+                </div>
+
+                <div class="flex-col ml-2">
+                    <%= skeet_action(:like) do %>
+                        <span
+                            class="<% if @skeet_body['viewer']['like'] %> text-red-600 dark:text-red-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
+                            aria-label="<%= pluralize(@skeet_body['likeCount'], 'like') %>"
+                        >
+                            <%= icon 'fa-solid', 'heart' %> <%= @skeet_body['likeCount'] %>
+                        </span>
+                    <% end %>
+                </div>
+
+                <div class="flex-col ml-2" <% unless @skeet_body['viewer']['repost'] %> data-controller="popper" <% end %>>
+                    <%= skeet_action(:repost, @skeet_body['viewer']['repost'] ? {} : {
+                        'popper-target': 'form',
+                    }) do %>
+                        <span
+                            class="<% if @skeet_body['viewer']['repost'] %> text-green-600 dark:text-green-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
+                            aria-label="<%= pluralize(@skeet_body['repostCount'], 'repost') %>"
+                        >
+                            <%= icon 'fa-solid', 'retweet' %> <%= @skeet_body['repostCount'] %>
+                        </span>
+                    <% end %>
+                    <div data-popper-target="tooltip" class="hidden bg-zinc-100 dark:bg-zinc-900 p-2 rounded-md shadow-md">
+                        <%= skeet_action(:repost) do %>
+                            <%= icon 'fa-solid', 'retweet' %> Reskeet
+                        <% end %>
+
+                        <%= render DividerComponent.new %>
+
+                        <%= skeet_action(:repost, {
+                            controller: 'composer',
+                            uri: @skeet_body['uri'],
+                            cid: @skeet_body['cid'],
+                            did: @skeet_body['author']['did'],
+                            action: 'reskeet',
+                        }) do %>
+                            <%= icon 'fa-solid', 'quote-left' %> Quote Reskeet
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </turbo-frame>
+    </div>
 </div>

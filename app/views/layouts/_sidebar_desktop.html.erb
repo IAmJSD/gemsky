@@ -31,7 +31,7 @@
 
     <%= render DividerComponent.new %>
 
-    <form class="mt-4 text-center" data-controller="dialog-toggle" aria-controls="skeet_composer_dialog">
+    <form class="mt-4 text-center" data-controller="composer">
         <%= render ButtonComponent.new(
             name: 'submit',
             label: 'Compose Skeet',
@@ -44,7 +44,7 @@
     <form class="mt-5" data-controller="dialog-toggle" aria-controls="user_switch_modal">
         <button type="submit">
             <div class="flex" data-controller="twemoji">
-                <div class="flex-col">
+                <div class="flex-col todo-fixme">
                     <img
                         class="w-12 h-12 rounded-full"
                         src="<%= @profile['avatar'] ? @profile['avatar'] : '/default_pfp.png' %>"

@@ -65,6 +65,7 @@ class HomeController < ApplicationController
 
     def home_did
         @highlights = :home
+        @timeline = @bluesky_user.bluesky_client.get_timeline
         render :home_did, layout: 'client'
     end
 end

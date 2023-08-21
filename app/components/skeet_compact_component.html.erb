@@ -1,0 +1,33 @@
+<div data-controller="twemoji" class="block">
+    <% profile = @skeet_body['author'] %>
+
+    <div class="flex">
+        <div class="flex-col todo-fixme">
+            <a href="/profile/<%= profile['did'] %>" class="unstyled">
+                <img
+                    class="w-12 h-12 rounded-full"
+                    src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
+                    alt=""
+                />
+            </a>
+        </div>
+
+        <div class="flex-col ml-4">
+            <p class="mb-1">
+                <a href="/profile/<%= profile['did'] %>" class="unstyled">
+                    <%= profile['displayName'] %> <span class="text-gray-700 dark:text-gray-400"><%= profile['handle'] %></span>
+                </a>
+            </p>
+
+            <%# TODO: add the authed param %>
+            <a href="/post/<%= profile['did'] %>/<%= @skeet_body['uri'].split('/').last %>" class="unstyled">
+                <%= render SkeetPostContentsComponent.new(
+                    skeet_body: @skeet_body,
+                    user: @user,
+                    bluesky_user: @bluesky_user,
+                    compact: true,
+                ) %>
+            </a>
+        </div>
+    </div>
+</div>

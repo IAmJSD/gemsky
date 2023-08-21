@@ -1,8 +1,8 @@
 <div data-controller="twemoji" class="block">
     <% profile = @skeet_body['author'] %>
     <a href="/profile/<%= profile['did'] %>" class="unstyled">
-        <div class="flex mb-5" data-controller="twemoji">
-            <div class="flex-col">
+        <div class="flex mb-4" data-controller="twemoji">
+            <div class="flex-col todo-fixme">
                 <img
                     class="w-12 h-12 rounded-full"
                     src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
@@ -21,5 +21,5 @@
         </div>
     </a>
 
-    <%= render SkeetPostContentsComponent.new(skeet_body: @skeet_body) %>
+    <%= render SkeetPostContentsComponent.new(skeet_body: @skeet_body, user: @user, bluesky_user: @bluesky_user) %>
 </div>

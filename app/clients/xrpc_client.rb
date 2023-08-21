@@ -60,7 +60,7 @@ class XrpcRequestor
         end
 
         # Parse the JSON.
-        response.json
+        response.json unless response.body.empty?
     end
 end
 

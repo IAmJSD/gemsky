@@ -1,3 +1,32 @@
-<div data-controller="twemoji" class="block">
-    <%= render SkeetHighlightComponent.new(skeet_body: @post['thread']['post']) %>
+<% get_parents(@post['thread']).each do |parent| %>
+    <div class="mb-6">
+        <%= render SkeetCompactComponent.new(
+            skeet_body: parent['post'],
+            user: @user,
+            bluesky_user: @bluesky_user,
+        ) %>
+    </div>
+<% end %>
+
+<%# TODO: a line would be nice between all these %>
+
+<%= render SkeetHighlightComponent.new(
+    skeet_body: @post['thread']['post'],
+    user: @user,
+    bluesky_user: @bluesky_user,
+) %>
+
+<div class="mt-4">
+    <% @post['thread']['replies'].each do |child| %>
+        <%= render DividerComponent.new %>
+
+        <div class="my-4">
+            <%= render SkeetCompactComponent.new(
+                skeet_body: child['post'],
+                user: @user,
+                bluesky_user: @bluesky_user,
+            ) %>
+            <%# TODO: Handle replies %>
+        </div>
+    <% end %>
 </div>

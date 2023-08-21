@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ComposerController from "./composer_controller"
+application.register("composer", ComposerController)
+
 import ContentWarningController from "./content_warning_controller"
 application.register("content-warning", ContentWarningController)
 
@@ -18,6 +21,12 @@ application.register("did-switch-remapper", DidSwitchRemapperController)
 
 import NotificationCountController from "./notification_count_controller"
 application.register("notification-count", NotificationCountController)
+
+import PopperController from "./popper_controller"
+application.register("popper", PopperController)
+
+import SkeetCompactController from "./skeet_compact_controller"
+application.register("skeet-compact", SkeetCompactController)
 
 import TwemojiController from "./twemoji_controller"
 application.register("twemoji", TwemojiController)

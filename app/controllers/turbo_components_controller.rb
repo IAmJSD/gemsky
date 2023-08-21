@@ -1,6 +1,7 @@
 class TurboComponentsController < ApplicationController
     before_action :must_be_turbo_request!
     skip_before_action :user_must_authenticate!, only: [:skeet_media_frame]
+    before_action :validate_did_permissions!, only: [:skeet_action]
 
     YOUTUBE_SHORT_PATH = /^\/([a-zA-Z0-9_-]{11})$/
     TWITCH_CHANNEL_PATH = /^\/([a-zA-Z0-9][\w]{2,24})$/
@@ -142,7 +143,100 @@ class TurboComponentsController < ApplicationController
         end
     end
 
+    def skeet_action
+        # Switch on the action.
+        case params[:skeet_action]
+        when 'like'
+            like_action
+        when 'repost'
+            repost_action
+        else
+            raise ActionController::RoutingError.new('Not Found')
+        end
+
+        # Get the post.
+        begin
+            @post = @bluesky_user.bluesky_client.get_post_thread(params[:post_uri])
+        rescue BlueskyError
+            # Raise a 404 if we can't find the post.
+            raise ActiveRecord::RecordNotFound
+        end
+
+        # Render post/view.
+        render 'post/view'
+    end
+
     private
+
+    def like_action
+        # Check if we have a like cid.
+        like_cid = params[:action_cid]
+        if like_cid.nil?
+            # Create the like.
+            begin
+                @bluesky_user.bluesky_client.create_record({
+                    collection: 'app.bsky.feed.like',
+                    record: {
+                        :'$type' => 'app.bsky.feed.like',
+                        createdAt: Time.now.utc.iso8601,
+                        subject: {
+                            cid: params[:post_cid],
+                            uri: params[:post_uri],
+                        },
+                    },
+                    repo: params[:author_did],
+                })
+            rescue BlueskyError
+                # Ignore
+            end
+        else
+            # Delete the like.
+            begin
+                @bluesky_user.bluesky_client.delete_record({
+                    collection: 'app.bsky.feed.like',
+                    repo: params[:author_did],
+                    rkey: like_cid,
+                })
+            rescue BlueskyError
+                # Ignore
+            end
+        end
+    end
+
+    def repost_action
+        # Check if we have a repost cid.
+        repost_cid = params[:action_cid]
+        if repost_cid.nil?
+            # Create the repost.
+            begin
+                @bluesky_user.bluesky_client.create_record({
+                    collection: 'app.bsky.feed.repost',
+                    record: {
+                        :'$type' => 'app.bsky.feed.repost',
+                        createdAt: Time.now.utc.iso8601,
+                        subject: {
+                            cid: params[:post_cid],
+                            uri: params[:post_uri],
+                        },
+                    },
+                    repo: params[:author_did],
+                })
+            rescue BlueskyError
+                # Ignore
+            end
+        else
+            # Delete the repost.
+            begin
+                @bluesky_user.bluesky_client.delete_record({
+                    collection: 'app.bsky.feed.repost',
+                    repo: params[:author_did],
+                    rkey: repost_cid,
+                })
+            rescue BlueskyError
+                # Ignore
+            end
+        end
+    end
 
     def must_be_turbo_request!
         # If the request is not a turbo request, return a 404.

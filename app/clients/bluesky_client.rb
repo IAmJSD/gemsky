@@ -35,6 +35,21 @@ class BlueskyClient
         xrpc_client.get.app_bsky_feed_getPostThread(uri: uri)
     end
 
+    def create_record(body)
+        xrpc_client.post.com_atproto_repo_createRecord(**body)
+    end
+
+    def delete_record(body)
+        xrpc_client.post.com_atproto_repo_deleteRecord(**body)
+    end
+
+    def get_timeline(algorithm: 'reverse-chronological', limit: 100)
+        xrpc_client.get.app_bsky_feed_getTimeline(
+            algorithm: algorithm,
+            limit: limit,
+        )
+    end
+
     private
 
     def token_outdated?
