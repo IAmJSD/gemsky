@@ -1,0 +1,37 @@
+<div data-controller="twemoji" class="block">
+    <% profile = @skeet_body['author'] %>
+    <a href="/profile/<%= profile['did'] %>" class="unstyled">
+        <div class="flex mb-5" data-controller="twemoji">
+            <div class="flex-col">
+                <img
+                    class="w-12 h-12 rounded-full"
+                    src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
+                    alt=""
+                />
+            </div>
+
+            <div class="flex-col ml-3 my-auto text-left">
+                <h3 class="text-lg font-medium">
+                    <%= profile['displayName'] %>
+                </h3>
+                <p class="text-sm">
+                    <%= profile['handle'] %>
+                </p>
+            </div>
+        </div>
+    </a>
+
+    <%= SkeetRenderer.new(@skeet_body['record']['text'], skeet_hash).render do |renderer| %>
+        <%# This is cursed because of how the renderer works but speed innit. %>
+        <% if @skeet_body['record']['embed'].present? %>
+            <% render SkeetPostEmbedComponent.new(embed: @skeet_body['record']['embed']) %>
+        <% elsif renderer.media_url %>
+            <%
+                '<turbo-frame id="skeet-media-' +
+                    skeet_hash + '" src="' +
+                    make_media_url_frame(renderer.media_url) +
+                    '"></turbo-frame>'
+            %>
+        <% end %>
+    <% end %>
+</div>
