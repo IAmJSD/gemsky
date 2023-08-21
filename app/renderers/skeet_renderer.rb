@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SkeetRenderer
     CONTENT_WARNING = /^([ct]w: *.+?)\n/mi
     MANY_MULTIPLE_NEWLINES = /\n{5,}/m
