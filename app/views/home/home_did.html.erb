@@ -1,4 +1,4 @@
-<div data-cursor="<%= @timeline['cursor'] %>" class="max-w-2xl">
+<div data-cursor="<%= @timeline['cursor'] %>">
     <% @timeline['feed'].each do |post| %>
         <div data-controller="avatar-line">
             <% unless post['reply'].nil? %>
