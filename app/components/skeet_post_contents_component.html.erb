@@ -33,7 +33,7 @@
                     <% end %>
                 </div>
 
-                <div class="flex-col ml-2">
+                <div class="flex-col ml-4">
                     <%= skeet_action(:like) do %>
                         <span
                             class="<% if @skeet_body['viewer']['like'] %> text-red-600 dark:text-red-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
@@ -44,7 +44,7 @@
                     <% end %>
                 </div>
 
-                <div class="flex-col ml-2" <% unless @skeet_body['viewer']['repost'] %> data-controller="popper" <% end %>>
+                <div class="flex-col ml-4" <% unless @skeet_body['viewer']['repost'] %> data-controller="popper" <% end %>>
                     <%= skeet_action(:repost, @skeet_body['viewer']['repost'] ? {} : {
                         'popper-target': 'form',
                     }) do %>
