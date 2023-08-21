@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AvatarLineController from "./avatar_line_controller"
+application.register("avatar-line", AvatarLineController)
+
 import ComposerController from "./composer_controller"
 application.register("composer", ComposerController)
 
@@ -24,9 +27,6 @@ application.register("notification-count", NotificationCountController)
 
 import PopperController from "./popper_controller"
 application.register("popper", PopperController)
-
-import SkeetCompactController from "./skeet_compact_controller"
-application.register("skeet-compact", SkeetCompactController)
 
 import TwemojiController from "./twemoji_controller"
 application.register("twemoji", TwemojiController)

@@ -2,10 +2,12 @@
     <% profile = @skeet_body['author'] %>
     <a href="/profile/<%= profile['did'] %>" class="unstyled">
         <div class="flex mb-4" data-controller="twemoji">
-            <div class="flex-col todo-fixme">
+            <div class="flex-col min-w-fit">
                 <img
                     class="w-12 h-12 rounded-full"
                     src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
+                    data-line-target
+                    loading="lazy"
                     alt=""
                 />
             </div>

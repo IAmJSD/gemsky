@@ -44,10 +44,11 @@
     <form class="mt-5" data-controller="dialog-toggle" aria-controls="user_switch_modal">
         <button type="submit">
             <div class="flex" data-controller="twemoji">
-                <div class="flex-col todo-fixme">
+                <div class="flex-col min-w-fit">
                     <img
                         class="w-12 h-12 rounded-full"
                         src="<%= @profile['avatar'] ? @profile['avatar'] : '/default_pfp.png' %>"
+                        loading="lazy"
                         alt=""
                     />
                 </div>

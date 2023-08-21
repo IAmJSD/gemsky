@@ -1,22 +1,22 @@
 <div data-cursor="<%= @timeline['cursor'] %>" class="max-w-2xl">
     <% @timeline['feed'].each do |post| %>
-        <% unless post['reply'].nil? %>
-            <div class="mb-6">
-                <%= render SkeetCompactComponent.new(
-                    skeet_body: post['reply']['parent'],
-                    user: @user,
-                    bluesky_user: @bluesky_user,
-                ) %>
-            </div>
-        <% end %>
+        <div data-controller="avatar-line">
+            <% unless post['reply'].nil? %>
+                <div class="mb-6">
+                    <%= render SkeetCompactComponent.new(
+                        skeet_body: post['reply']['parent'],
+                        user: @user,
+                        bluesky_user: @bluesky_user,
+                    ) %>
+                </div>
+            <% end %>
 
-        <%# TODO: a line would be nice between this %>
-
-        <%= render SkeetCompactComponent.new(
-            skeet_body: post['post'],
-            user: @user,
-            bluesky_user: @bluesky_user,
-        ) %>
+            <%= render SkeetCompactComponent.new(
+                skeet_body: post['post'],
+                user: @user,
+                bluesky_user: @bluesky_user,
+            ) %>
+        </div>
 
         <%= render DividerComponent.new %>
     <% end %>
