@@ -57,7 +57,7 @@ class SkeetRenderer
         handle_newlines(tokens)
 
         # Close the div.
-        html += tokens.map(&:to_s).join('') + '</div>'
+        html += tokens.join('') + '</div>'
 
         # Call the block with ourselves.
         res = block.call(self) if block
@@ -180,15 +180,15 @@ class SkeetRenderer
             start_index = facet['index']['byteStart']
             end_index = facet['index']['byteEnd']
 
+            # Get everything between this start index and the last end and push it.
+            between = start_index.zero? ? '' : text[last_end..start_index - 1]
+            tokens.push(between) unless between.empty?
+
             # Set last end to this.
             last_end = end_index
 
-            # Get everything between this start index and the last end and push it.
-            between = text[last_end..start_index]
-            tokens.push(between) unless between.empty?
-
             # Get the content for this.
-            content = text[start_index..end_index]
+            content = text[start_index..end_index - 1]
 
             # Make the content XSS safe.
             safe_content = ERB::Util.html_escape(content)
@@ -232,7 +232,7 @@ class SkeetRenderer
         end
 
         # Push the last bit of text.
-        tokens.push(text[last_end..-1]) unless last_end == text.length
+        tokens.push(text[last_end..-1]) if last_end < text.length
 
         # Return the tokens.
         tokens
