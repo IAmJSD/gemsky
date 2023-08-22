@@ -37,6 +37,9 @@ export default class extends Controller {
     }
     window.addEventListener("resize", this.resizeHandler)
     window.addEventListener("scroll", this.resizeHandler)
+
+    // Hack to handle random fast DOM mutation.
+    setTimeout(this.resizeHandler, 100)
   }
 
   disconnect() {
