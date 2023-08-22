@@ -13,6 +13,10 @@ class UserSelectorComponent < ViewComponent::Base
       }
     end
     @resolved_users = threads.map(&:value)
+    @users.each do |user|
+      user.save!
+    end
+    @resolved_users
   end
 
   private

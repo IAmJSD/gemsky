@@ -74,11 +74,6 @@ class BlueskyUser < ApplicationRecord
             # Remarshal the client since information in it may have changed.
             @model_instance.bluesky_client_marshalled = Base64.encode64(Marshal.dump(new_client))
 
-            # Save the model instance.
-            BlueskyUser.transaction do
-                @model_instance.save!
-            end
-
             # Return the result.
             res
         end
