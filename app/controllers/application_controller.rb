@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
         super
 
         # Defines the initial values for the title and description.
-        @title = "Clearsky"
-        @description = "Clearsky is a client for the Bluesky application."
+        @title = "Gemsky"
+        @description = "Gemsky is a client for the Bluesky application."
     end
 
     attr_accessor :title, :description

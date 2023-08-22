@@ -232,7 +232,7 @@ class AuthenticationController < ApplicationController
 
     def validate_totp(user)
         totp_code = format_totp_code(params[:totp_code])
-        totp = ROTP::TOTP.new(user.totp_secret, issuer: 'Clearsky', drift_behind: 30)
+        totp = ROTP::TOTP.new(user.totp_secret, issuer: 'Gemsky', drift_behind: 30)
         if !totp.verify(totp_code)
             # Downcase and strip the code.
             totp_code = params[:totp_code].downcase.strip
