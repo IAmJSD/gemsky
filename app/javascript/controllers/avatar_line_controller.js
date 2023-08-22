@@ -50,6 +50,11 @@ export default class extends Controller {
   }
 
   _createSvg() {
+    // Return if there are no pairs.
+    if (this.pairs.length === 0) {
+      return
+    }
+
     // Make a absolute positioned SVG.
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 
