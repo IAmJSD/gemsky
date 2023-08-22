@@ -175,20 +175,21 @@ class SkeetRenderer
 
         # Go through each facet.
         last_end = 0
+        text_ascii = text.dup.force_encoding('ASCII-8BIT')
         @facets.each do |facet|
             # Get the start/end indexes.
             start_index = facet['index']['byteStart']
             end_index = facet['index']['byteEnd']
 
             # Get everything between this start index and the last end and push it.
-            between = start_index.zero? ? '' : text[last_end..start_index - 1]
-            tokens.push(between) unless between.empty?
+            between = text_ascii[last_end...start_index]
+            tokens.push(between.force_encoding('UTF-8')) unless between.nil?
 
             # Set last end to this.
             last_end = end_index
 
             # Get the content for this.
-            content = text[start_index..end_index - 1]
+            content = text_ascii[start_index...end_index].force_encoding('UTF-8')
 
             # Make the content XSS safe.
             safe_content = ERB::Util.html_escape(content)
@@ -232,7 +233,8 @@ class SkeetRenderer
         end
 
         # Push the last bit of text.
-        tokens.push(text[last_end..-1]) if last_end < text.length
+        r = text_ascii[last_end..].force_encoding('UTF-8')
+        tokens.push(r) unless r.nil?
 
         # Return the tokens.
         tokens
