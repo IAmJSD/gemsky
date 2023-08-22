@@ -162,6 +162,9 @@ class TurboComponentsController < ApplicationController
             raise ActiveRecord::RecordNotFound
         end
 
+        # Write the user.
+        @bluesky_user.save!
+
         # Render post/view.
         render 'post/view'
     end

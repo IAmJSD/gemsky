@@ -26,6 +26,9 @@ class PostController < ApplicationController
             raise ActiveRecord::RecordNotFound
         end
 
+        # Write the user.
+        @bluesky_user.save!
+
         # Render view either with the application layout or the client layout.
         render layout: user ? 'client' : 'application'
     end
