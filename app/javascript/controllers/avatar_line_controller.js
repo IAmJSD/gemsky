@@ -6,7 +6,7 @@ export default class extends Controller {
     let elements = [...this.element.querySelectorAll("[data-line-target]")]
 
     // Get the pairs to connect.
-    this. pairs = []
+    this.pairs = []
     let p = elements.pop()
     while (p) {
       // Get the last element.
