@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
+const timeout = ms => new Promise(r => setTimeout(r, ms))
+
 // Connects to data-controller="avatar-line"
 export default class extends Controller {
   connect() {
@@ -39,7 +41,7 @@ export default class extends Controller {
     window.addEventListener("scroll", this.resizeHandler)
 
     // Hack to handle random fast DOM mutation.
-    setTimeout(this.resizeHandler, 100)
+    this._brutalDomShiftHack()
   }
 
   disconnect() {
@@ -88,6 +90,7 @@ export default class extends Controller {
   }
 
   _destroyLines() {
+    if (!this.lines) return
     for (const line of this.lines) {
       line.remove()
     }
@@ -118,5 +121,23 @@ export default class extends Controller {
     // Add the SVG to the page.
     document.body.appendChild(wrapper)
     return svg
+  }
+
+  async _brutalDomShiftHack() {
+    let l
+    for (let i = 0; i < 10; i++) {
+      if (!this.lines) return
+      const line = this.lines[0]
+      if (!line) return
+      const new_ = line.getAttribute("x1")
+      if (!l) l = new_
+      this._destroyLines()
+      this._createLines()
+      if (new_ !== l) {
+        l = new_
+        break
+      }
+      await timeout(100)
+    }
   }
 }
