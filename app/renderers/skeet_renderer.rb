@@ -22,7 +22,6 @@ class SkeetRenderer
     end
 
     def media_url
-        return nil unless @last_media
         @last_media
     end
 
