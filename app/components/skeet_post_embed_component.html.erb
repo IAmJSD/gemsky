@@ -1,1 +1,20 @@
-<div>Add SkeetPostEmbed template here</div>
+<% if @embed['$type'] == 'app.bsky.embed.images' %>
+    <div class="mt-2" data-image-gallery-root>
+        <% @embed['images'].each_slice(2).each do |chunk| %>
+            <div class="flex w-full mt-2">
+                <% chunk.each do |image| %>
+                    <div class="flex-col mr-2 max-w-sm">
+                        <img
+                            class="w-full h-full rounded cursor-pointer"
+                            src="https://bsky-image-proxy.webscalesoftware.ltd/bsky.social/<%= @did %>/<%= image['image']['ref']['$link'] %>?w=1024"
+                            loading="lazy"
+                            alt="<%= image['alt'] %>"
+                            tabindex="0"
+                            data-controller="photo-frame"
+                        />
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+<% end %>

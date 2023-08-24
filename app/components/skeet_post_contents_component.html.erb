@@ -2,7 +2,11 @@
     <%= SkeetRenderer.new(@skeet_body['record']['text'], skeet_hash, @skeet_body['record']['facets'] || []).render do |renderer| %>
         <%# This is cursed because of how the renderer works but speed innit. %>
         <% if @skeet_body['record']['embed'].present? %>
-            <% render SkeetPostEmbedComponent.new(embed: @skeet_body['record']['embed']) %>
+            <%
+                uri = @skeet_body['uri']
+                did = uri.split('/')[2]
+            %>
+            <% render SkeetPostEmbedComponent.new(embed: @skeet_body['record']['embed'], did: did) %>
         <% elsif renderer.media_url %>
             <%
                 '<turbo-frame id="skeet-media-' +

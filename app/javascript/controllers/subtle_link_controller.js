@@ -9,8 +9,9 @@ export default class extends Controller {
     // Set the aria information to signify that this will redirect.
     this.element.setAttribute("role", "link")
 
-    // Handle the click event.
+    // Handle the click and key events.
     this.element.addEventListener("click", this.click.bind(this))
+    this.element.addEventListener("keydown", this.keydown.bind(this))
   }
 
   click(e) {
@@ -25,5 +26,22 @@ export default class extends Controller {
 
     // Visit within Turbo.
     Turbo.visit(this.element.dataset.href)
+  }
+
+  keydown(e) {
+    // Make sure this event is not over a link or button.
+    let target = e.target
+    while (target) {
+      if (target.tagName === "A" || target.tagName === "BUTTON") {
+        return
+      }
+      target = target.parentNode
+    }
+
+    // Handle the enter key.
+    if (e.key === "Enter") {
+      // Visit within Turbo.
+      Turbo.visit(this.element.dataset.href)
+    }
   }
 }
