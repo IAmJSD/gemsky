@@ -19,14 +19,14 @@ application.register("dialog", DialogController)
 import DialogToggleController from "./dialog_toggle_controller"
 application.register("dialog-toggle", DialogToggleController)
 
-import DidSwitchRemapperController from "./did_switch_remapper_controller"
-application.register("did-switch-remapper", DidSwitchRemapperController)
-
 import NotificationCountController from "./notification_count_controller"
 application.register("notification-count", NotificationCountController)
 
 import PopperController from "./popper_controller"
 application.register("popper", PopperController)
+
+import SubtleLinkController from "./subtle_link_controller"
+application.register("subtle-link", SubtleLinkController)
 
 import TwemojiController from "./twemoji_controller"
 application.register("twemoji", TwemojiController)

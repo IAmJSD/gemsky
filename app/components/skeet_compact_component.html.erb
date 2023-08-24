@@ -3,7 +3,7 @@
 
     <div class="flex">
         <div class="flex-col min-w-fit">
-            <a href="/profile/<%= profile['did'] %>" class="unstyled">
+            <a href="<%= helpers.make_profile_link profile['did'] %>" target="_top" class="unstyled">
                 <img
                     class="w-12 h-12 rounded-full"
                     src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
@@ -17,7 +17,7 @@
         <div class="flex-col flex-grow ml-4">
             <div class="mb-1 flex w-full">
                 <p class="flex-col">
-                    <a href="/profile/<%= profile['did'] %>" class="unstyled">
+                    <a href="<%= helpers.make_profile_link profile['did'] %>" target="_top" class="unstyled">
                         <%= profile['displayName'] %> <span class="text-gray-700 dark:text-gray-400"><%= profile['handle'] %></span>
                     </a>
                 </p>
@@ -28,14 +28,14 @@
             </div>
 
             <%# TODO: add the authed param %>
-            <a href="/post/<%= profile['did'] %>/<%= @skeet_body['uri'].split('/').last %>" class="unstyled">
+            <div data-controller="subtle-link" data-href="<%= helpers.make_post_link profile['did'], @skeet_body['uri'].split('/').last %>">
                 <%= render SkeetPostContentsComponent.new(
                     skeet_body: @skeet_body,
                     user: @user,
                     bluesky_user: @bluesky_user,
                     compact: true,
                 ) %>
-            </a>
+            </div>
         </div>
     </div>
 </div>

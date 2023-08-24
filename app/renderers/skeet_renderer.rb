@@ -205,7 +205,7 @@ class SkeetRenderer
             case feature['$type']
             when 'app.bsky.richtext.facet#mention'
                 url = "/profile/#{feature['did']}"
-                html = "<a href=\"#{ERB::Util.html_escape(url)}\">#{safe_content}</a>".html_safe
+                html = "<a target=\"_top\" href=\"#{ERB::Util.html_escape(url)}\">#{safe_content}</a>".html_safe
             when 'app.bsky.richtext.facet#link'
                 url = feature['uri']
 

@@ -1,6 +1,6 @@
 <% resolved_users.each do |user| %>
     <% unless user['handle'].nil? %>
-    <a href="/home/<%= user['did'] %>" data-did="<%= user['did'] %>" data-controller="did-switch-remapper" class="w-full unstyled" target="_top">
+    <a href="/home/<%= user['did'] %>" class="w-full unstyled" target="_top">
     <% end %>
 
     <% if user['handle'].nil? %>
