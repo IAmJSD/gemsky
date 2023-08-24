@@ -25,6 +25,9 @@ class XrpcRequestor
         url.path = "/xrpc/#{method}"
 
         if @http_method == :get
+            # Delete any keys with nil values.
+            kwargs.delete_if { |_, v| v.nil? }
+
             # Turn it into a query string.
             url.query = URI.encode_www_form(kwargs)
             request = Minigun::GET.new(url)

@@ -2,7 +2,7 @@
 <% @profile = @bluesky_user.bluesky_client.get_profile %>
 <%= inside_layout do %>
     <div class="flex w-full">
-        <div class="flex-col hidden md:block">
+        <div class="flex-col hidden md:block sticky self-start top-6">
             <%= render partial: 'layouts/sidebar_desktop' %>
         </div>
 

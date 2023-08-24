@@ -14,29 +14,32 @@ export default class extends Controller {
     this.element.addEventListener("keydown", this.keydown.bind(this))
   }
 
-  click(e) {
-    // Make sure this event is not over a link or button.
+  _ignoredClick(e) {
     let target = e.target
     while (target) {
-      if (target.tagName === "A" || target.tagName === "BUTTON") {
-        return
+      let v = null
+      try {
+        v = target.getAttribute("data-image-gallery-item")
+      } catch {}
+      if (target.tagName === "A" || target.tagName === "BUTTON" || v !== null) {
+        return true
       }
       target = target.parentNode
     }
+    return false
+  }
+
+  click(e) {
+    // Handle ignored clicks.
+    if (this._ignoredClick(e)) return
 
     // Visit within Turbo.
     Turbo.visit(this.element.dataset.href)
   }
 
   keydown(e) {
-    // Make sure this event is not over a link or button.
-    let target = e.target
-    while (target) {
-      if (target.tagName === "A" || target.tagName === "BUTTON") {
-        return
-      }
-      target = target.parentNode
-    }
+    // Handle ignored clicks.
+    if (this._ignoredClick(e)) return
 
     // Handle the enter key.
     if (e.key === "Enter") {

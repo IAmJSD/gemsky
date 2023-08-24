@@ -9,11 +9,13 @@
         </div>
     <% end %>
 
-    <%= render SkeetHighlightComponent.new(
-        skeet_body: @post['thread']['post'],
-        user: @user,
-        bluesky_user: @bluesky_user,
-    ) %>
+    <span data-controller="scroll-anchor">
+        <%= render SkeetHighlightComponent.new(
+            skeet_body: @post['thread']['post'],
+            user: @user,
+            bluesky_user: @bluesky_user,
+        ) %>
+    </span>
 </div>
 
 <div class="mt-4">

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   # Defines a VERY slim API for the AJAX calls.
   get "ajax/notification_count/:did", to: "ajax#notification_count"
+  get "ajax/home_feed", to: "ajax#home_feed"
 
   # Defines the homepage routes.
   get "home", to: "home#home"

@@ -43,10 +43,11 @@ class BlueskyClient
         xrpc_client.post.com_atproto_repo_deleteRecord(**body)
     end
 
-    def get_timeline(algorithm: 'reverse-chronological', limit: 100)
+    def get_timeline(algorithm='reverse-chronological', limit=100, cursor=nil)
         xrpc_client.get.app_bsky_feed_getTimeline(
             algorithm: algorithm,
             limit: limit,
+            cursor: cursor,
         )
     end
 

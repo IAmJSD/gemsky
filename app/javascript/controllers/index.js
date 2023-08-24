@@ -19,11 +19,17 @@ application.register("dialog", DialogController)
 import DialogToggleController from "./dialog_toggle_controller"
 application.register("dialog-toggle", DialogToggleController)
 
+import InfiniteScrollingController from "./infinite_scrolling_controller"
+application.register("infinite-scrolling", InfiniteScrollingController)
+
 import NotificationCountController from "./notification_count_controller"
 application.register("notification-count", NotificationCountController)
 
 import PopperController from "./popper_controller"
 application.register("popper", PopperController)
+
+import ScrollAnchorController from "./scroll_anchor_controller"
+application.register("scroll-anchor", ScrollAnchorController)
 
 import SubtleLinkController from "./subtle_link_controller"
 application.register("subtle-link", SubtleLinkController)

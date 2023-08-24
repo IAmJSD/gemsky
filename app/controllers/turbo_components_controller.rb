@@ -12,6 +12,7 @@ class TurboComponentsController < ApplicationController
     def home_feed
         @timeline = @bluesky_user.bluesky_client.get_timeline
         @bluesky_user.save!
+        @ajax_route = '/ajax/home_feed'
         render 'feed'
     end
 
