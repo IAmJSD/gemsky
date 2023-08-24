@@ -1,27 +1,5 @@
-<div data-cursor="<%= @timeline['cursor'] %>">
-    <% @timeline['feed'].each do |post| %>
-        <div data-controller="avatar-line">
-            <% unless post['reply'].nil? %>
-                <div class="mb-6">
-                    <%= render SkeetCompactComponent.new(
-                        skeet_body: post['reply']['parent'],
-                        user: @user,
-                        bluesky_user: @bluesky_user,
-                    ) %>
-                </div>
-            <% end %>
-
-            <%= render SkeetCompactComponent.new(
-                skeet_body: post['post'],
-                user: @user,
-                bluesky_user: @bluesky_user,
-            ) %>
-        </div>
-
-        <div class="my-3">
-            <%= render DividerComponent.new %>
-        </div>
-    <% end %>
-
-    <%# TODO: Infinite scrolling %>
-</div>
+<turbo-frame id="home_feed" src="/components/home_feed/<%= @bluesky_user.did %>">
+    <div class="block mx-auto max-w-max">
+        <%= render SpinnerComponent.new %>
+    </div>
+</turbo-frame>

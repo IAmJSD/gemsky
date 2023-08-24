@@ -1,13 +1,19 @@
 class TurboComponentsController < ApplicationController
     before_action :must_be_turbo_request!
     skip_before_action :user_must_authenticate!, only: [:skeet_media_frame]
-    before_action :validate_did_permissions!, only: [:skeet_action]
+    before_action :validate_did_permissions!, only: [:skeet_action, :home_feed]
 
     YOUTUBE_SHORT_PATH = /^\/([a-zA-Z0-9_-]{11})$/
     TWITCH_CHANNEL_PATH = /^\/([a-zA-Z0-9][\w]{2,24})$/
     TWITCH_VIDEO_PATH = /^\/videos\/([0-9]+)$/
 
     def user_list; end
+
+    def home_feed
+        @timeline = @bluesky_user.bluesky_client.get_timeline
+        @bluesky_user.save!
+        render 'feed'
+    end
 
     def skeet_media_frame
         # Get the URL.

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get 'components/user_list', to: 'turbo_components#user_list'
   get 'components/skeet_media_frame/:frame_id/:url', to: 'turbo_components#skeet_media_frame', constraints: { frame_id: /[^\/]+/, url: /[^\/]+/ }
   patch 'components/skeet_action', to: 'turbo_components#skeet_action'
+  get 'components/home_feed/:did', to: 'turbo_components#home_feed', constraints: { did: /[^\/]+/ }
 
   # Defines a VERY slim API for the AJAX calls.
   get "ajax/notification_count/:did", to: "ajax#notification_count"
