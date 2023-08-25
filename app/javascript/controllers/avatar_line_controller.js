@@ -42,6 +42,13 @@ export default class extends Controller {
 
     // Hack to handle random fast DOM mutation.
     this._brutalDomShiftHack()
+
+    // Handle mutations.
+    this.observer = new MutationObserver(() => {
+      this._destroyLines()
+      this._createLines()
+    })
+    this.observer.observe(document.body)
   }
 
   disconnect() {
@@ -49,6 +56,7 @@ export default class extends Controller {
     this.mediaQuery.removeEventListener("change", this.darkHandler)
     window.removeEventListener("resize", this.resizeHandler)
     window.removeEventListener("scroll", this.resizeHandler)
+    this.observer.disconnect()
   }
 
   _createLines() {
