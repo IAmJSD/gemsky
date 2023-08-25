@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SkeetRenderer
-    CONTENT_WARNING = /^([ct]w: *.+?)\n/mi
+    CONTENT_WARNING = /(.*[ct]w: *.+?)(\n|$)/mi
     MANY_MULTIPLE_NEWLINES = /\n{5,}/m
     BOLD_TEXT = /\*\*([^\n*]+?)\*\*/
     ITALIC_TEXT = /\*([^\n]+?)\*/
@@ -25,14 +25,32 @@ class SkeetRenderer
         @last_media
     end
 
+    def render_inline
+        # Tokenize the text and handle facets.
+        tokens = tokenize_facets(@text_content)
+
+        # XSS escape the non-facet tokens.
+        tokens = tokens.map do |token|
+            if token.is_a?(FacetToken)
+                token
+            else
+                ERB::Util.html_escape(token)
+            end
+        end
+
+        # Handle formatting.
+        handle_formatting(tokens)
+
+        # Handle newlines.
+        handle_newlines(tokens)
+
+        # Return the tokens.
+        tokens.join('')
+    end
+
     def render(&block)
         # Handle content warnings.
         html, closing, text, length = handle_content_warnings
-
-        # Remove any facets that are in the content warning.
-        @facets = @facets.select do |facet|
-            facet['index']['byteStart'] >= length
-        end
 
         # Append the body information to the HTML.
         html += '<div class="skeet-content">'
@@ -244,8 +262,21 @@ class SkeetRenderer
         match = CONTENT_WARNING.match(@text_content)
         return '', '', @text_content, 0 unless match
 
-        # Get a santized version of the content warning.
-        sanitized = ERB::Util.html_escape(match[1])
+        # Get the facets in this content warning.
+        cw_facets = @facets.select do |facet|
+            facet['index']['byteStart'] < match[0].length
+        end
+
+        # Get the content warning text.
+        sanitized = SkeetRenderer.new(match[1], @skeet_id, cw_facets).render_inline
+
+        # Remove any facets that are in the content warning and reallign them to the start of the text.
+        @facets = @facets.select do |facet|
+            return false unless facet['index']['byteStart'] > match[0].length
+            facet['index']['byteStart'] -= match[0].length
+            facet['index']['byteEnd'] -= match[0].length
+            true
+        end
 
         # Get the HTML for the content warning.
         closing = '</div></div>'
