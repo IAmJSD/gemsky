@@ -50,7 +50,7 @@ class SkeetRenderer
 
     def render(&block)
         # Handle content warnings.
-        html, closing, text, length = handle_content_warnings
+        html, closing, text = handle_content_warnings
 
         # Append the body information to the HTML.
         html += '<div class="skeet-content">'
@@ -294,6 +294,6 @@ class SkeetRenderer
     </button></p>
 </form>
 <div style=\"display: none; margin-top: 1rem;\" id=\"#{@skeet_id}\" data-content-warning-target=\"content\">"
-        return html, closing, match.post_match, match[0].length
+        return html, closing, match.post_match
     end
 end
