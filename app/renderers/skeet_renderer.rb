@@ -260,7 +260,7 @@ class SkeetRenderer
     def handle_content_warnings
         # Try to match a content warning.
         match = CONTENT_WARNING.match(@text_content)
-        return '', '', @text_content, 0 unless match
+        return '', '', @text_content unless match
 
         # Get the facets in this content warning.
         cw_facets = @facets.select do |facet|
