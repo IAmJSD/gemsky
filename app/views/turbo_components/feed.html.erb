@@ -15,13 +15,22 @@
 
                 <div data-controller="avatar-line">
                     <% unless post['reply'].nil? %>
-                        <div class="mb-6">
-                            <%= render SkeetCompactComponent.new(
-                                skeet_body: post['reply']['parent'],
-                                user: @user,
-                                bluesky_user: @bluesky_user,
+                        <% if post['reply']['parent']['uri'] == post['reply']['root']['uri'] %>
+                            <div class="mb-6">
+                                <%= render SkeetCompactComponent.new(
+                                    skeet_body: post['reply']['parent'],
+                                    user: @user,
+                                    bluesky_user: @bluesky_user,
+                                ) %>
+                            </div>
+                        <% elsif post['reason'].nil? %>
+                            <%= render SkeetReasonComponent.new(
+                                reason: {
+                                    '$type' => 'io.clearsky.customDefs#reasonReply',
+                                    'to' => post['reply']['parent']['author'],
+                                },
                             ) %>
-                        </div>
+                        <% end %>
                     <% end %>
 
                     <%= render SkeetCompactComponent.new(
