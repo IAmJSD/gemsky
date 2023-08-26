@@ -17,6 +17,10 @@
                 <p class="text-sm mt-1">
                     <%= @external['description'] %>
                 </p>
+
+                <p class="text-gray-700 dark:text-gray-400 text-xs mt-2">
+                    <%= icon 'fa-solid', 'link' %> <%= URI.parse(@external['uri']).hostname %>
+                </p>
             </div>
         </div>
     </a>
