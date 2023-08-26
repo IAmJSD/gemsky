@@ -48,7 +48,10 @@ export default class extends Controller {
       this._destroyLines()
       this._createLines()
     })
-    this.observer.observe(document.body)
+    this.observer.observe(document.getElementById("__main__"), {
+      childList: true,
+      subtree: true,
+    })
   }
 
   disconnect() {
