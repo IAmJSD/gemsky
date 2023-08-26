@@ -1,0 +1,23 @@
+<div class="mt-4">
+    <a class="unstyled" href="<%= @external['uri'] %>" target="_top">
+        <div class="flex border-gray-800 border-2 rounded-md p-2">
+            <div class="flex-col my-auto w-56 mr-4">
+                <img
+                    class="rounded object-cover"
+                    src="https://bsky-image-proxy.webscalesoftware.ltd/bsky.social/<%= @did %>/<%= @external['thumb']['ref']['$link'] %>"
+                    loading="lazy"
+                />
+            </div>
+
+            <div class="flex-col">
+                <p class="text-sm mt-2 font-bold">
+                    <%= @external['title'] %>
+                </p>
+
+                <p class="text-sm mt-1">
+                    <%= @external['description'] %>
+                </p>
+            </div>
+        </div>
+    </a>
+</div>
