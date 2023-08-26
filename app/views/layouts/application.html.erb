@@ -15,6 +15,20 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+
+    <% if user.present? && user.opendyslexic %>
+    <style>
+      @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('/OpenDyslexic-Regular.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      * {
+        font-family: 'OpenDyslexic', sans-serif;
+      }
+    </style>
+    <% end %>
   </head>
 
   <body class="dark:text-white dark:bg-gray-900">
