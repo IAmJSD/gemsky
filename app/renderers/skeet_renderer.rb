@@ -25,6 +25,16 @@ class SkeetRenderer
         @last_media
     end
 
+    def render_with_sliced_cw
+        # Try to match a content warning.
+        match = CONTENT_WARNING.match(@text_content)
+        return render_inline unless match
+
+        # Just render the match with ... at the end.
+        content = match[1] + '...'
+        SkeetRenderer.new(content, @skeet_id, @facets).render_inline
+    end
+
     def render_inline
         # Tokenize the text and handle facets.
         tokens = tokenize_facets(@text_content)
@@ -45,7 +55,7 @@ class SkeetRenderer
         handle_newlines(tokens)
 
         # Return the tokens.
-        tokens.join('')
+        tokens.join('').html_safe
     end
 
     def render(&block)
