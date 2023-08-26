@@ -8,4 +8,20 @@
         images: @embed['images'],
         did: @did,
     ) %>
+<% elsif @embed['$type'] == 'app.bsky.embed.record' %>
+    <%= render SkeetPostRecordEmbedComponent.new(
+        embed: @outer_embed,
+        did: @did,
+    ) %>
+<% elsif @embed['$type'] == 'app.bsky.embed.recordWithMedia' %>
+    <%= render SkeetPostEmbedComponent.new(
+        embed: @embed['media'],
+        did: @did,
+        outer_embed: @outer_embed,
+    ) %>
+    <%= render SkeetPostEmbedComponent.new(
+        embed: @embed['record'],
+        did: @did,
+        outer_embed: @outer_embed,
+    ) %>
 <% end %>

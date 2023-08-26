@@ -6,7 +6,11 @@
                 uri = @skeet_body['uri']
                 did = uri.split('/')[2]
             %>
-            <% render SkeetPostEmbedComponent.new(embed: @skeet_body['record']['embed'], did: did) %>
+            <% render SkeetPostEmbedComponent.new(
+                embed: @skeet_body['record']['embed'],
+                outer_embed: @skeet_body['embed'],
+                did: did,
+            ) %>
         <% elsif renderer.media_url %>
             <%
                 '<turbo-frame id="skeet-media-' +
