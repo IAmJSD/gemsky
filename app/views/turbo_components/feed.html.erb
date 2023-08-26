@@ -9,6 +9,10 @@
     >
         <div id="__payload__">
             <% @timeline['feed'].each do |post| %>
+                <% unless post['reason'].nil? %>
+                    <%= render SkeetReasonComponent.new(reason: post['reason']) %>
+                <% end %>
+
                 <div data-controller="avatar-line">
                     <% unless post['reply'].nil? %>
                         <div class="mb-6">

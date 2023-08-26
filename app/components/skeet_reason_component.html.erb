@@ -1,0 +1,7 @@
+<% if @reason['$type'] == 'app.bsky.feed.defs#reasonRepost' %>
+    <p class="text-sm ml-2 mb-3 text-gray-700 dark:text-gray-400">
+        <a href="/profile/<%= @reason['by']['did'] %>" class="unstyled" target="_top">
+            <%= icon 'fa-solid', 'retweet' %> Reskeeted by <%= @reason['by']['displayName'] %>
+        </a>
+    </p>
+<% end %>
