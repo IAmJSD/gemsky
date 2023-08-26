@@ -75,8 +75,8 @@ export default class extends Controller {
     // Check if we are loading.
     if (this.loading) return
 
-    // Find if we have scrolled to 1000px from the bottom.
-    const scrolledToBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000
+    // Find if we have scrolled to 3000px from the bottom.
+    const scrolledToBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 3000
     if (scrolledToBottom) {
       // Load more.
       this._loadMore()
