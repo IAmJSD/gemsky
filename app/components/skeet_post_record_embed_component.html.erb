@@ -1,8 +1,8 @@
-<% if @embed['$type'] == 'app.bsky.embed.record#viewBlocked' %>
+<% if @embed['record']['$type'] == 'app.bsky.embed.record#viewBlocked' %>
     <p class="mt-2 border-2 p-3 border-gray-800 rounded-md">
         <%= icon 'fa-solid', 'eye-slash' %> The user who made this post has you blocked.
     </p>
-<% elsif @embed['$type'] == 'app.bsky.embed.record#viewNotFound' %>
+<% elsif @embed['record'].nil? || @embed['record']['$type'] == 'app.bsky.embed.record#viewNotFound' %>
     <p class="mt-2 border-2 p-3 border-gray-800 rounded-md">
         <%= icon 'fa-solid', 'triangle-exclamation' %> This post was deleted.
     </p>

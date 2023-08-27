@@ -194,21 +194,21 @@ class TurboComponentsController < ApplicationController
                             uri: params[:post_uri],
                         },
                     },
-                    repo: params[:author_did],
+                    repo: params[:did],
                 })
-            rescue BlueskyError
-                # Ignore
+            rescue BlueskyError => e
+                Rails.logger.info("Did not like: #{e.error}: #{e.message}")
             end
         else
             # Delete the like.
             begin
                 @bluesky_user.bluesky_client.delete_record({
                     collection: 'app.bsky.feed.like',
-                    repo: params[:author_did],
+                    repo: params[:did],
                     rkey: like_cid,
                 })
-            rescue BlueskyError
-                # Ignore
+            rescue BlueskyError => e
+                Rails.logger.info("Did not unlike: #{e.error}: #{e.message}")
             end
         end
     end
@@ -229,21 +229,21 @@ class TurboComponentsController < ApplicationController
                             uri: params[:post_uri],
                         },
                     },
-                    repo: params[:author_did],
+                    repo: params[:did],
                 })
-            rescue BlueskyError
-                # Ignore
+            rescue BlueskyError => e
+                Rails.logger.info("Did not repost: #{e.error}: #{e.message}")
             end
         else
             # Delete the repost.
             begin
                 @bluesky_user.bluesky_client.delete_record({
                     collection: 'app.bsky.feed.repost',
-                    repo: params[:author_did],
+                    repo: params[:did],
                     rkey: repost_cid,
                 })
-            rescue BlueskyError
-                # Ignore
+            rescue BlueskyError => e
+                Rails.logger.info("Did not unrepost: #{e.error}: #{e.message}")
             end
         end
     end

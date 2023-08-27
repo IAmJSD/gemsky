@@ -41,6 +41,9 @@ class BlueskyUser < ApplicationRecord
         def method_missing(method, *args, **kwargs, &block)
             self.do_request!(method, *args, **kwargs, &block)
         rescue BlueskyError => e
+            # Re-raise if it isn't a 401.
+            raise e unless e.status_code == 401
+
             # Log that we got an error.
             Rails.logger.error("Bluesky error: #{e.error}: #{e.message} - remaking client!")
 
