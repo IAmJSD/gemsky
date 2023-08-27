@@ -36,7 +36,7 @@ module ApplicationHelper
     private
 
     def get_authed_did
-        return nil if user.nil? || user.bluesky_users.length == 1
+        return nil if user.nil? || user.linked_bluesky_users.length == 1
         @bluesky_user.did
     end
 end
