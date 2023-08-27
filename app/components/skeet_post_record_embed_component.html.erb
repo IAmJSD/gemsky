@@ -1,26 +1,29 @@
 <% if @embed['$type'] == 'app.bsky.embed.record#viewBlocked' %>
-    <p class="mt-4 border-2 p-3 border-gray-800 rounded-md">
+    <p class="mt-2 border-2 p-3 border-gray-800 rounded-md">
         <%= icon 'fa-solid', 'eye-slash' %> The user who made this post has you blocked.
     </p>
 <% elsif @embed['$type'] == 'app.bsky.embed.record#viewNotFound' %>
-    <p class="mt-4 border-2 p-3 border-gray-800 rounded-md">
+    <p class="mt-2 border-2 p-3 border-gray-800 rounded-md">
         <%= icon 'fa-solid', 'triangle-exclamation' %> This post was deleted.
     </p>
 <% elsif @embed['$type'] == 'app.bsky.embed.record#view' %>
     <% record = @embed['record'] %>
     <a href="<%= helpers.make_post_link record['author']['did'], record['uri'].split('/').last %>" target="_top" class="unstyled">
-        <div class="mt-4 border-2 p-3 border-gray-800 rounded-md text-sm">
-            <p class="font-bold">
+        <div class="mt-2 border-2 p-3 border-gray-800 rounded-md text-sm">
+            <div class="flex">
                 <img
                     alt=""
                     src="<%= record['author']['avatar'] ? record['author']['avatar'] : '/default_pfp.png' %>"
-                    class="w-5 h-5 my-auto rounded-full inline-block"
+                    class="w-5 h-5 my-auto rounded-full inline-block flex-col"
                     loading="lazy"
                 />
-                <span class="ml-2"><%= record['author']['displayName'] %></span>
-            </p>
+                <p class="flex-col ml-2 my-auto">
+                    <span class="font-bold"><%= record['author']['displayName'] %></span>
+                     <span class="text-gray-700 dark:text-gray-400"><%= record['author']['handle'] %></span>
+                </p>
+            </div>
 
-            <p class="mt-4">
+            <p class="mt-2">
                 <%= SkeetRenderer.new(record['value']['text'], '', []).render_with_sliced_cw %>
             </p>
 
@@ -47,7 +50,7 @@
                         </div>
                     <% end %>
                 <% elsif embed['$type'] == 'app.bsky.embed.external#view' %>
-                    <p class="mt-4 text-gray-700 dark:text-gray-400">
+                    <p class="mt-2 text-gray-700 dark:text-gray-400">
                         <%= icon 'fa-solid', 'link' %> <%= URI.parse(embed['external']['uri']).hostname %>:
                         <%= embed['external']['title'] %>
                     </p>
