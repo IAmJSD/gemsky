@@ -39,7 +39,9 @@ module TokenConcern
             end
 
             # Touch the record and return the wrapped value.
-            x.touch
+            self.transaction do
+                x.touch
+            end
             @return_full_token ? x : x.send(self.token_wraps)
         end
 
