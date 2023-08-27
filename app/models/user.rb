@@ -18,6 +18,7 @@ class User < ApplicationRecord
     end
 
     def linked_bluesky_users
-        BlueskyUser.joins(:bluesky_user_editors).where(bluesky_user_editors: { user_id: self.id }).all
+        return @linked_bluesky_users unless @linked_bluesky_users.nil?
+        @linked_bluesky_users = BlueskyUser.joins(:bluesky_user_editors).where(bluesky_user_editors: { user_id: self.id }).all
     end
 end
