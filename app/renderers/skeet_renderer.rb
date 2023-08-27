@@ -28,11 +28,11 @@ class SkeetRenderer
     def render_with_sliced_cw
         # Try to match a content warning.
         match = CONTENT_WARNING.match(@text_content)
-        return render_inline unless match
+        return [render_inline, false] unless match
 
         # Just render the match with ... at the end.
         content = match[1] + '...'
-        SkeetRenderer.new(content, @skeet_id, @facets).render_inline
+        [SkeetRenderer.new(content, @skeet_id, @facets).render_inline, true]
     end
 
     def render_inline

@@ -24,7 +24,11 @@
             </div>
 
             <p class="mt-2">
-                <%= SkeetRenderer.new(record['value']['text'], '', []).render_with_sliced_cw %>
+                <%
+                    v, cw = SkeetRenderer.new(record['value']['text'], '', []).render_with_sliced_cw
+                    record['embeds'] = [] if cw 
+                %>
+                <%= v %>
             </p>
 
             <% record['embeds'].each do |embed| %>
