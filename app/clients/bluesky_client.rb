@@ -44,11 +44,14 @@ class BlueskyClient
     end
 
     def get_timeline(algorithm='reverse-chronological', limit=100, cursor=nil)
-        xrpc_client.get.app_bsky_feed_getTimeline(
+        t = Time.now
+        resp = xrpc_client.get.app_bsky_feed_getTimeline(
             algorithm: algorithm,
             limit: limit,
             cursor: cursor,
         )
+        Rails.logger.info("Got timeline in #{Time.now - t}s")
+        resp
     end
 
     private
