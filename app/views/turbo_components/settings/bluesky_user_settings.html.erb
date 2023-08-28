@@ -3,6 +3,18 @@
         <%= icon 'fa-solid', 'cloud' %> Bluesky User Settings
     </h2>
 
+    <% if @success %>
+        <%= render NotificationComponent.new(
+            type: 'success',
+            body: [@success],
+        ) %>
+    <% elsif @errors.present? %>
+        <%= render NotificationComponent.new(
+            type: 'error',
+            body: @errors,
+        ) %>
+    <% end %>
+
     <%= render partial: 'editor_table' %>
 
     <% if owns_bluesky_user? %>
