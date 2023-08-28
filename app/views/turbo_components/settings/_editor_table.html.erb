@@ -1,0 +1,56 @@
+<div class="mt-4">
+    <h3 class="text-md font-medium mb-2">
+        Active Editors
+    </h3>
+    <p class="text-sm mb-3">
+        This table shows all of the editors that are currently active on your account.
+        <% if owns_bluesky_user? %> You can add or remove editors by using the buttons
+        and e-mail input below. <% end %>
+    </p>
+
+    <table class="table-auto border-spacing-x-4 border-spacing-y-1 border-separate">
+        <thead>
+            <tr>
+                <th class="text-left">E-mail</th>
+                <th class="text-left">Role</th>
+                <th class="text-left"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @bluesky_user.bluesky_user_editors.map(&:user).each do |editor| %>
+                <tr>
+                    <td><%= editor.email %></td>
+                    <td><%= editor == @bluesky_user.user ? 'Owner' : 'Editor' %></td>
+                    <td>
+                        <% if owns_bluesky_user? && editor != @bluesky_user.user %>
+                            <div class="flex">
+                                <%= form_with class: 'flex-col', method: :delete, url: "#{request.path}/member", data: {
+                                    'turbo-confirm': 'Are you sure you want to remove this editor from your Bluesky account?',
+                                } do %>
+                                    <%= hidden_field_tag :email, editor.email %>
+                                    <button type="submit" class="text-red-600 dark:text-red-400">
+                                        <%= icon 'fa-solid', 'trash' %> Remove
+                                    </button>
+                                <% end %>
+
+                                <%= form_with class: 'flex-col', method: :patch, data: {
+                                    'turbo-confirm': 'Are you sure you want to transfer ownership of this Bluesky account to this editor?',
+                                } do %>
+                                    <%= hidden_field_tag :new_owner_email, editor.email %>
+                                    <button type="submit" class="ml-4 text-green-600 dark:text-green-400">
+                                        <%= icon 'fa-solid', 'user' %> Transfer Ownership
+                                    </button>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+    <% if owns_bluesky_user? %>
+        add owner submit support
+    <% end %>
+</div>

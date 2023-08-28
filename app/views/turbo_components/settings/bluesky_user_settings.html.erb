@@ -3,6 +3,8 @@
         <%= icon 'fa-solid', 'cloud' %> Bluesky User Settings
     </h2>
 
+    <%= render partial: 'editor_table' %>
+
     <% if owns_bluesky_user? %>
         <%= form_with method: :delete, class: 'mt-4', data: {
             'turbo-confirm': 'Are you sure you want to unlink your Bluesky account? This will remove all editors from the user.',
