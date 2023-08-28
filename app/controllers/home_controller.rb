@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
     before_action :validate_did_permissions!, only: [:home_did, :settings_skeleton]
+    skip_before_action :user_must_authenticate!, only: [:accept_invite]
 
     def index
         redirect_to '/home'
@@ -71,5 +72,13 @@ class HomeController < ApplicationController
     def settings_skeleton
         @highlights = :settings
         render :settings_skeleton, layout: 'client'
+    end
+
+    # This is barely within the scope of home, but it is barely in the scope of anything
+    # else, so it is here.
+    def accept_invite
+        v = UserEditorInvite.resolve_token(params[:code])
+        v.accept! unless v.nil?
+        redirect_to '/home'
     end
 end

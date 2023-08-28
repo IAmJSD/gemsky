@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_000101) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_28_022806) do
   create_table "bluesky_user_editors", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "bluesky_user_id", null: false
@@ -59,6 +59,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_000101) do
     t.index ["user_id"], name: "index_totp_recovery_codes_on_user_id"
   end
 
+  create_table "user_editor_invites", force: :cascade do |t|
+    t.integer "bluesky_user_id", null: false
+    t.integer "user_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bluesky_user_id"], name: "index_user_editor_invites_on_bluesky_user_id"
+    t.index ["token"], name: "index_user_editor_invites_on_token", unique: true
+    t.index ["user_id"], name: "index_user_editor_invites_on_user_id"
+  end
+
   create_table "user_email_update_requests", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "email", null: false
@@ -104,6 +115,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_000101) do
   add_foreign_key "bluesky_users", "users"
   add_foreign_key "half_tokens", "users"
   add_foreign_key "totp_recovery_codes", "users"
+  add_foreign_key "user_editor_invites", "bluesky_users"
+  add_foreign_key "user_editor_invites", "users"
   add_foreign_key "user_email_update_requests", "users"
   add_foreign_key "user_password_change_requests", "users"
   add_foreign_key "user_tokens", "users"

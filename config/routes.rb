@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   post "home/new", to: "home#new_user_post"
   get "home/:did", to: "home#home_did"
   get "home/:did/settings", to: "home#settings_skeleton"
+  get "accept_invite/:code", to: "home#accept_invite"
 
   # Handle post viewing.
   get "post/:identifier/:post_id", to: "post#view", constraints: { identifier: /[^\/]+/, post_id: /[^\/]+/ }

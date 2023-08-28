@@ -1,6 +1,7 @@
 class BlueskyUser < ApplicationRecord
     belongs_to :user
     has_many :bluesky_user_editors, dependent: :destroy
+    has_many :user_editor_invites, dependent: :destroy
 
     validates :token, presence: true # We don't need to uniqueness check since the DID will be unique.
     before_validation :set_did

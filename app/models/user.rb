@@ -11,6 +11,7 @@ class User < ApplicationRecord
     has_one :user_email_update_request, dependent: :destroy
     has_many :bluesky_users, dependent: :destroy
     has_many :bluesky_user_editors, dependent: :destroy
+    has_many :user_editor_invites, dependent: :destroy
 
     def logout!
         self.user_tokens.destroy_all

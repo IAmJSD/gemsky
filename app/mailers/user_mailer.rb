@@ -16,4 +16,11 @@ class UserMailer < ApplicationMailer
         @token = params[:token]
         mail(to: @user.email, subject: 'Gemsky | Email Update Request')
     end
+
+    def user_editor_invite
+        @email = params[:email]
+        @token = params[:token]
+        @handle = params[:handle]
+        mail(to: @email, subject: "Gemsky | You've been invited to manage #{@handle}")
+    end
 end
