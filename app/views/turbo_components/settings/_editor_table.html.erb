@@ -51,6 +51,27 @@
     </table>
 
     <% if owns_bluesky_user? %>
-        add owner submit support
+        <%= form_with method: :patch do %>
+            <div class="flex w-full max-w-lg mt-4">
+                <div class="flex-col flex-grow">
+                    <%= render InputComponent.new(
+                        name: 'email',
+                        label: 'E-mail Address',
+                        type: 'email',
+                        value: params[:email],
+                        slim: true,
+                    ) %>
+                </div>
+
+                <div class="flex-col ml-2">
+                    <%= render ButtonComponent.new(
+                        name: 'add',
+                        label: 'Add User',
+                        type: 'submit',
+                        icon: 'plus',
+                    ) %>
+                </div>
+            </div>
+        <% end %>
     <% end %>
 </div>

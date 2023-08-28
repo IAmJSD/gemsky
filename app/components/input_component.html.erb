@@ -1,14 +1,16 @@
 <div class="mb-3">
-    <div id="<%= @name %>_aria_label">
-        <p class="font-bold">
-            <%= @label %>:
-        </p>
-        <% unless @description.nil? %>
-            <p class="my-3">
-                <%= @description %>
+    <% unless @slim %>
+        <div id="<%= @name %>_aria_label">
+            <p class="font-bold">
+                <%= @label %>:
             </p>
-        <% end %>
-    </div>
+            <% unless @description.nil? %>
+                <p class="my-3">
+                    <%= @description %>
+                </p>
+            <% end %>
+        </div>
+    <% end %>
 
     <input
         aria-labelledby="<%= @name %>_aria_label"
