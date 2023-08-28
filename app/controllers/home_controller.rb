@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-    before_action :validate_did_permissions!, only: [:home_did]
+    before_action :validate_did_permissions!, only: [:home_did, :settings_skeleton]
 
     def index
         redirect_to '/home'
@@ -66,5 +66,10 @@ class HomeController < ApplicationController
     def home_did
         @highlights = :home
         render :home_did, layout: 'client'
+    end
+
+    def settings_skeleton
+        @highlights = :settings
+        render :settings_skeleton, layout: 'client'
     end
 end

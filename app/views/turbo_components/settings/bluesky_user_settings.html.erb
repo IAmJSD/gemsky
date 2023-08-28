@@ -1,0 +1,28 @@
+<turbo-frame id="bluesky_user_settings">
+    <h2 class="text-2xl font-medium">
+        <%= icon 'fa-solid', 'cloud' %> Bluesky User Settings
+    </h2>
+
+    <% if owns_bluesky_user? %>
+        <%= form_with method: :delete, class: 'mt-4', data: {
+            'turbo-confirm': 'Are you sure you want to unlink your Bluesky account? This will remove all editors from the user.',
+            'turbo-frame': '_top',
+        } do %>
+            <h3 class="text-lg font-medium mb-2">
+                <%= icon 'fa-solid', 'trash' %> Unlink Account
+            </h3>
+            <p class="text-sm mb-2">
+                Unlinking the Bluesky account will remove it from Gemsky. This also means
+                that all editors will need to be re-added to the account if you decide to 
+                link it again.
+            </p>
+
+            <%= render ButtonComponent.new(
+                name: 'unlink',
+                label: 'Unlink',
+                type: 'danger',
+                icon: 'link-slash',
+            ) %>
+        <% end %>
+    <% end %>
+</turbo-frame>
