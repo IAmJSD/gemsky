@@ -8,6 +8,8 @@ module TurboComponents
 
         def user_settings; end
 
+        EMAIL_INVITE_SUCCESS = 'If the user has a Gemsky account, a e-mail will be sent to them.'.freeze
+
         def user_settings_patch
             # TODO
             render 'user_settings'
@@ -16,6 +18,34 @@ module TurboComponents
         def bluesky_user_settings; end
 
         def bluesky_user_settings_patch
+            # Handle if the Bluesky user gets a email.
+            if params[:email].present?
+                # Raise a error if the user does not own the Bluesky user.
+                @errors = ['You must be the owner of this Bluesky User to perform this action.'] unless owns_bluesky_user?
+                return render 'bluesky_user_settings' if @errors.present?
+
+                # Get the user with the email.
+                s = params[:email].is_a?(String) ? params[:email] : ''
+                user = User.find_by(email: s.downcase.strip)
+                if user.nil?
+                    # We do not want to tip off the user at
+                    # the presence of a Gemsky account or not.
+                    @success = EMAIL_INVITE_SUCCESS
+                    return render 'bluesky_user_settings'
+                end
+
+                # Try to create the invite.
+                res = UserEditorInvite.create(bluesky_user: @bluesky_user, user: user)
+                if res.errors.any?
+                    @errors = res.errors.full_messages
+                    return render 'bluesky_user_settings', status: :bad_request
+                end
+
+                # Send the success message.
+                @success = EMAIL_INVITE_SUCCESS
+                return render 'bluesky_user_settings'
+            end
+
             # TODO
             render 'bluesky_user_settings'
         end
