@@ -1,4 +1,6 @@
 class PostController < ApplicationController
+    include ClientRenderConcern
+
     skip_before_action :user_must_authenticate!
     before_action :lax_authentication!
 
@@ -30,7 +32,7 @@ class PostController < ApplicationController
         @bluesky_user.save!
 
         # Render view either with the application layout or the client layout.
-        urender_client(:view) if user
+        render_client(:view) if user
     end
 
     private
