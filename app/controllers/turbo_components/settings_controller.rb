@@ -20,60 +20,10 @@ module TurboComponents
 
         def bluesky_user_settings_patch
             # Handle if the Bluesky user gets a email to handle.
-            if params[:email].present?
-                # Raise a error if the user does not own the Bluesky user.
-                @errors = [OWNER_ERROR] unless owns_bluesky_user?
-                return render 'bluesky_user_settings' if @errors.present?
-
-                # Get the user with the email.
-                s = params[:email].is_a?(String) ? params[:email] : ''
-                user = User.find_by(email: s.downcase.strip)
-                if user.nil?
-                    # We do not want to tip off the user at the presence of a Gemsky account or not.
-                    @success = EMAIL_INVITE_SUCCESS
-                    return render 'bluesky_user_settings'
-                end
-
-                # Try to create the invite.
-                res = UserEditorInvite.create(bluesky_user: @bluesky_user, user: user)
-                if res.errors.any?
-                    @errors = res.errors.full_messages
-                    return render 'bluesky_user_settings', status: :bad_request
-                end
-
-                # Send the success message.
-                @success = EMAIL_INVITE_SUCCESS
-                return render 'bluesky_user_settings'
-            end
+            return bluesky_user_settings_patch_email if params[:email].present?
 
             # Handle if a owner tries to transfer ownership.
-            if params[:new_owner_email].present?
-                # Raise a error if the user does not own the Bluesky user.
-                @errors = [OWNER_ERROR] unless owns_bluesky_user?
-                return render 'bluesky_user_settings' if @errors.present?
-
-                # Find the user in the editors.
-                s = params[:new_owner_email].is_a?(String) ? params[:new_owner_email] : ''
-                editor = @bluesky_user.bluesky_user_editors.joins(:user).
-                    find_by(users: { email: s.downcase.strip })
-
-                # Raise a error if the user is not a editor.
-                @errors = ['The user must be a editor to transfer ownership.'] if editor.nil?
-                return render 'bluesky_user_settings' if @errors.present?
-
-                # Raise a error if the user is already a owner.
-                editor = editor.user
-                @errors = ['The user is already a owner.'] if editor == @bluesky_user.user
-                return render 'bluesky_user_settings' if @errors.present?
-
-                # Transfer ownership.
-                @bluesky_user.user = editor
-                @bluesky_user.save!
-
-                # Send the success message.
-                @success = 'Ownership transferred.'
-                return render 'bluesky_user_settings'
-            end
+            return bluesky_user_setting_transfer_ownership if params[:new_owner_email].present?
 
             # TODO
             render 'bluesky_user_settings'
@@ -90,6 +40,60 @@ module TurboComponents
         end
 
         private
+
+        def bluesky_user_setting_transfer_ownership
+            # Raise a error if the user does not own the Bluesky user.
+            @errors = [OWNER_ERROR] unless owns_bluesky_user?
+            return render 'bluesky_user_settings' if @errors.present?
+
+            # Find the user in the editors.
+            s = params[:new_owner_email].is_a?(String) ? params[:new_owner_email] : ''
+            editor = @bluesky_user.bluesky_user_editors.joins(:user).
+                find_by(users: { email: s.downcase.strip })
+
+            # Raise a error if the user is not a editor.
+            @errors = ['The user must be a editor to transfer ownership.'] if editor.nil?
+            return render 'bluesky_user_settings' if @errors.present?
+
+            # Raise a error if the user is already a owner.
+            editor = editor.user
+            @errors = ['The user is already a owner.'] if editor == @bluesky_user.user
+            return render 'bluesky_user_settings' if @errors.present?
+
+            # Transfer ownership.
+            @bluesky_user.user = editor
+            @bluesky_user.save!
+
+            # Send the success message.
+            @success = 'Ownership transferred.'
+            return render 'bluesky_user_settings'
+        end
+
+        def bluesky_user_settings_patch_email
+            # Raise a error if the user does not own the Bluesky user.
+            @errors = [OWNER_ERROR] unless owns_bluesky_user?
+            return render 'bluesky_user_settings' if @errors.present?
+
+            # Get the user with the email.
+            s = params[:email].is_a?(String) ? params[:email] : ''
+            user = User.find_by(email: s.downcase.strip)
+            if user.nil?
+                # We do not want to tip off the user at the presence of a Gemsky account or not.
+                @success = EMAIL_INVITE_SUCCESS
+                return render 'bluesky_user_settings'
+            end
+
+            # Try to create the invite.
+            res = UserEditorInvite.create(bluesky_user: @bluesky_user, user: user)
+            if res.errors.any?
+                @errors = res.errors.full_messages
+                return render 'bluesky_user_settings', status: :bad_request
+            end
+
+            # Send the success message.
+            @success = EMAIL_INVITE_SUCCESS
+            return render 'bluesky_user_settings'
+        end
 
         def bluesky_user_settings_delete_member
             # Just render the page if the email is not a string.
