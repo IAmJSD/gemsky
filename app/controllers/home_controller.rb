@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+    include ClientRenderConcern
+
     before_action :validate_did_permissions!, only: [:home_did, :settings_skeleton]
     skip_before_action :user_must_authenticate!, only: [:accept_invite]
 
@@ -66,12 +68,12 @@ class HomeController < ApplicationController
 
     def home_did
         @highlights = :home
-        render :home_did, layout: 'client'
+        render_client :home_did
     end
 
     def settings_skeleton
         @highlights = :settings
-        render :settings_skeleton, layout: 'client'
+        render_client :settings_skeleton
     end
 
     # This is barely within the scope of home, but it is barely in the scope of anything

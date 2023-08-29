@@ -30,7 +30,7 @@ class PostController < ApplicationController
         @bluesky_user.save!
 
         # Render view either with the application layout or the client layout.
-        render layout: user ? 'client' : 'application'
+        urender_client(:view) if user
     end
 
     private

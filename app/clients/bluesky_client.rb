@@ -13,7 +13,7 @@ class BlueskyClient
         xrpc_client.get.com_atproto_server_getSession
     end
 
-    def get_profile(did: nil)
+    def get_profile(did=nil)
         did = @identifier if did.nil?
         xrpc_client.get.app_bsky_actor_getProfile(actor: did)
     end
