@@ -13,7 +13,7 @@
     <% end %>
 
     <input
-        aria-labelledby="<%= @name %>_aria_label"
+        <% unless @slim %>aria-labelledby="<%= @name %>_aria_label"<% end %>
         id="<%= @name %>"
         name="<%= @name %>"
         placeholder="<%= @label %>"
