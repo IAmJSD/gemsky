@@ -29,7 +29,6 @@ Rails.application.routes.draw do
   get 'components/bluesky_user_settings/:did', to: 'turbo_components/settings#bluesky_user_settings', constraints: { did: /[^\/]+/ }
   patch 'components/bluesky_user_settings/:did', to: 'turbo_components/settings#bluesky_user_settings_patch', constraints: { did: /[^\/]+/ }
   delete 'components/bluesky_user_settings/:did', to: 'turbo_components/settings#bluesky_user_settings_delete', constraints: { did: /[^\/]+/ }
-  delete 'components/bluesky_user_settings/:did/member', to: 'turbo_components/settings#bluesky_user_settings_delete_member', constraints: { did: /[^\/]+/ }
 
   # Defines a VERY slim API for the AJAX calls.
   get "ajax/notification_count/:did", to: "ajax#notification_count"

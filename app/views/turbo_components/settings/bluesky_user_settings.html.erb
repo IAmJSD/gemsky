@@ -22,6 +22,8 @@
             'turbo-confirm': 'Are you sure you want to unlink your Bluesky account? This will remove all editors from the user.',
             'turbo-frame': '_top',
         } do %>
+            <%= hidden_field_tag :form_action, 'user' %>
+
             <h3 class="text-md font-medium mb-2">
                 Unlink Account
             </h3>

@@ -1,7 +1,7 @@
 module TurboComponents
     class SettingsController < TurboComponentsController
         before_action :validate_did_permissions!, except: [:user_settings, :user_settings_patch]
-        before_action :must_own_bluesky_user!, only: [:bluesky_user_settings_delete, :bluesky_user_settings_delete_member]
+        before_action :must_own_bluesky_user!, only: [:bluesky_user_settings_delete]
         skip_before_action :must_be_turbo_request!
         before_action :must_be_turbo_request!, only: [:user_settings, :bluesky_user_settings]
         helper_method :owns_bluesky_user?
@@ -29,8 +29,7 @@ module TurboComponents
                 s = params[:email].is_a?(String) ? params[:email] : ''
                 user = User.find_by(email: s.downcase.strip)
                 if user.nil?
-                    # We do not want to tip off the user at
-                    # the presence of a Gemsky account or not.
+                    # We do not want to tip off the user at the presence of a Gemsky account or not.
                     @success = EMAIL_INVITE_SUCCESS
                     return render 'bluesky_user_settings'
                 end
@@ -81,18 +80,24 @@ module TurboComponents
         end
 
         def bluesky_user_settings_delete
-            # https://www.youtube.com/watch?v=Soa3gO7tL-c
-            @bluesky_user.destroy!
-            redirect_to '/home', status: :see_other
+            if params[:form_action] == 'user'
+                # https://www.youtube.com/watch?v=Soa3gO7tL-c
+                @bluesky_user.destroy!
+                return redirect_to '/home', status: :see_other
+            end
+
+            bluesky_user_settings_delete_member
         end
+
+        private
 
         def bluesky_user_settings_delete_member
             # Just render the page if the email is not a string.
-            email = params[:email]
+            email = params[:user_email]
             return render 'bluesky_user_settings' unless email.is_a?(String)
 
             # Find the editor.
-            editor = @bluesky_user.bluesky_user_editor.joins(:user).
+            editor = @bluesky_user.bluesky_user_editors.joins(:user).
                 find_by(users: { email: email.downcase.strip })
 
             # If we didn't find the editor, just return the settings.
@@ -105,8 +110,6 @@ module TurboComponents
             @errors = editor.errors.full_messages unless editor.errors.empty?
             render 'bluesky_user_settings'
         end
-
-        private
 
         def owns_bluesky_user?
             @bluesky_user.user == user

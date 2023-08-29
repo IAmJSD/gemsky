@@ -26,10 +26,10 @@
                     <td>
                         <% if owns_bluesky_user? && editor != @bluesky_user.user %>
                             <div class="flex">
-                                <%= form_with class: 'flex-col', method: :delete, url: "#{request.path}/member", data: {
+                                <%= form_with class: 'flex-col', method: :delete, data: {
                                     'turbo-confirm': 'Are you sure you want to remove this editor from your Bluesky account?',
                                 } do %>
-                                    <%= hidden_field_tag :email, editor.email %>
+                                    <%= hidden_field_tag :user_email, editor.email %>
                                     <button type="submit" class="text-red-600 dark:text-red-400">
                                         <%= icon 'fa-solid', 'trash' %> Remove
                                     </button>
