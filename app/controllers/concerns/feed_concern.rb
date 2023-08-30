@@ -9,7 +9,7 @@ module FeedConcern
 
             @timeline = @bluesky_user.bluesky_client.get_timeline(
                 'reverse-chronological',
-                ajax_feed ? 30 : 100,
+                ajax_feed ? 30 : 50,
                 get_cursor,
             )
             @bluesky_user.save!
