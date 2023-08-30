@@ -14,7 +14,12 @@
 
         <li class="my-6 <% if @highlights == :notifications %> font-bold <% end %>">
             <a href="/home/<%= @bluesky_user.did %>/notifications" class="unstyled">
-                <%= icon 'fa-solid', 'bell' %> <span class="ml-2">
+                <% if user.stovey_mode %>
+                    <%= image_tag("/stovey.png", alt: "stovey", class:"rounded-full object-scale-down") %>
+                <% else %>
+                    <%= icon 'fa-solid', 'bell' %>
+                <% end %>
+                <span class="ml-2">
                     Notifications
                 </span>
             </a>

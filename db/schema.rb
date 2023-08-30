@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_28_022806) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_30_014614) do
   create_table "bluesky_user_editors", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "bluesky_user_id", null: false
@@ -105,6 +105,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_022806) do
     t.datetime "updated_at", null: false
     t.string "totp_secret"
     t.boolean "opendyslexic"
+    t.boolean "stovey_mode"
     t.index "\"half_token\"", name: "index_users_on_half_token"
     t.index "\"user_token\"", name: "index_users_on_user_token"
     t.index ["email"], name: "index_users_on_email", unique: true
