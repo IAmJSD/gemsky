@@ -15,29 +15,33 @@
 
                 <div data-controller="avatar-line">
                     <% unless post[:reply].nil? %>
-                        <% if post[:reply][:parent][:uri] == post[:reply][:root][:uri] %>
-                            <div class="mb-6">
-                                <%= render SkeetCompactComponent.new(
-                                    skeet_body: post[:reply][:parent],
-                                    user: @user,
-                                    bluesky_user: @bluesky_user,
+                        <% cache post[:reply] do %>
+                            <% if post[:reply][:parent][:uri] == post[:reply][:root][:uri] %>
+                                <div class="mb-6">
+                                    <%= render SkeetCompactComponent.new(
+                                        skeet_body: post[:reply][:parent],
+                                        user: @user,
+                                        bluesky_user: @bluesky_user,
+                                    ) %>
+                                </div>
+                            <% elsif post[:reason].nil? %>
+                                <%= render SkeetReasonComponent.new(
+                                    reason: {
+                                        '$type' => 'io.clearsky.customDefs#reasonReply',
+                                        'to' => post[:reply][:parent][:author],
+                                    },
                                 ) %>
-                            </div>
-                        <% elsif post[:reason].nil? %>
-                            <%= render SkeetReasonComponent.new(
-                                reason: {
-                                    '$type' => 'io.clearsky.customDefs#reasonReply',
-                                    'to' => post[:reply][:parent][:author],
-                                },
-                            ) %>
+                            <% end %>
                         <% end %>
                     <% end %>
 
-                    <%= render SkeetCompactComponent.new(
-                        skeet_body: post[:post],
-                        user: @user,
-                        bluesky_user: @bluesky_user,
-                    ) %>
+                    <% cache post[:post] do %>
+                        <%= render SkeetCompactComponent.new(
+                            skeet_body: post[:post],
+                            user: @user,
+                            bluesky_user: @bluesky_user,
+                        ) %>
+                    <% end %>
                 </div>
 
                 <div class="my-3">
