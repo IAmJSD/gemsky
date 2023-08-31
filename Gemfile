@@ -90,3 +90,6 @@ gem "minigun", github: "WebScaleSoftwareLtd/minigun"
 
 # Add nokogiri for parsing html.
 gem "nokogiri"
+
+# For the big JSON blobs.
+gem 'fast_jsonparser', '0.6.0'

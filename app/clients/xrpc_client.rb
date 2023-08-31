@@ -63,7 +63,10 @@ class XrpcRequestor
         end
 
         # Parse the JSON.
-        response.json unless response.body.empty?
+        unless response.body.empty?
+            x = FastJsonparser.parse(response.body, symbolize_keys: false)
+            return x
+        end
     end
 end
 
