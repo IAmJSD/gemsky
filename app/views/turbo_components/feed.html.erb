@@ -15,7 +15,7 @@
 
                 <div data-controller="avatar-line">
                     <% unless post[:reply].nil? %>
-                        <% cache post[:reply] do %>
+                        <% cache [post[:reply], @bluesky_user, @user] do %>
                             <% if post[:reply][:parent][:uri] == post[:reply][:root][:uri] %>
                                 <div class="mb-6">
                                     <%= render SkeetCompactComponent.new(
@@ -35,7 +35,7 @@
                         <% end %>
                     <% end %>
 
-                    <% cache post[:post] do %>
+                    <% cache [post[:post], @bluesky_user, @user] do %>
                         <%= render SkeetCompactComponent.new(
                             skeet_body: post[:post],
                             user: @user,
