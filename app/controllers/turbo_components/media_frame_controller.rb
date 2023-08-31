@@ -80,7 +80,7 @@ module TurboComponents
                 @gif_id = url.path.split('-').last
 
                 # Get the giphy API key.
-                api_key = ENV['GIPHY_API_KEY'] || Rails.application.credentials.giphy_api_key
+                api_key = ENV[:GIPHY_API_KEY] || Rails.application.credentials.giphy_api_key
                 return render 'blank_media' if api_key.nil?
 
                 # Make a request to the Giphy API.
@@ -90,9 +90,9 @@ module TurboComponents
 
                 # Parse the JSON.
                 json = res.json
-                @media_url = json['data']['images']['original']['url']
-                @giphy_url = json['data']['url']
-                @media_alt = json['data']['title']
+                @media_url = json[:data][:images][:original][:url]
+                @giphy_url = json[:data][:url]
+                @media_alt = json[:data][:title]
 
                 # Render the Giphy media.
                 render 'giphy_media'
@@ -116,17 +116,17 @@ module TurboComponents
                 # Find the store-cache script and parse the JSON.
                 begin
                     script = doc.css('script#store-cache').first
-                    json = JSON.parse(script.content)
+                    json = FastJsonparser.parse(script.content)
                 rescue StandardError
                     return render 'blank_media'
                 end
 
                 # Get the media URL.
                 begin
-                    res = json['gifs']['byId'].values.
-                        first['results'][0]
-                    @media_url = res['media'][0]['tinygif']['url']
-                    @media_alt = res['content_description']
+                    res = json[:gifs][:byId].values.
+                        first[:results][0]
+                    @media_url = res[:media][0][:tinygif][:url]
+                    @media_alt = res[:content_description]
                     @tenor_url = url.to_s
                 rescue StandardError
                     return render 'blank_media'

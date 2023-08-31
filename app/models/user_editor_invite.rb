@@ -29,7 +29,7 @@ class UserEditorInvite < ApplicationRecord
         # Try to convert the DID to a handle.
         handle = self.bluesky_user.did
         begin
-          handle = self.bluesky_user.bluesky_client.get_profile['handle']
+          handle = self.bluesky_user.bluesky_client.get_profile[:handle]
         rescue BlueskyError
           # Do nothing.
         end

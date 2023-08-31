@@ -1,11 +1,11 @@
 <div data-controller="twemoji" class="block">
-    <% profile = @skeet_body['author'] %>
-    <a href="<%= helpers.make_profile_link profile['did'] %>" class="unstyled">
+    <% profile = @skeet_body[:author] %>
+    <a href="<%= helpers.make_profile_link profile[:did] %>" class="unstyled">
         <div class="flex mb-4" data-controller="twemoji">
             <div class="flex-col min-w-fit">
                 <img
                     class="w-12 h-12 rounded-full"
-                    src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
+                    src="<%= profile[:avatar] ? profile[:avatar] : '/default_pfp.png' %>"
                     data-line-target
                     loading="lazy"
                     alt=""
@@ -14,10 +14,10 @@
 
             <div class="flex-col ml-3 my-auto text-left">
                 <h3 class="text-lg font-medium">
-                    <%= profile['displayName'] %>
+                    <%= profile[:displayName] %>
                 </h3>
                 <p class="text-sm">
-                    <%= profile['handle'] %>
+                    <%= profile[:handle] %>
                 </p>
             </div>
         </div>

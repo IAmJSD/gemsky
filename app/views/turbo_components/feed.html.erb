@@ -1,40 +1,40 @@
 <turbo-frame id="feed">
     <span data-controller="scroll-anchor"></span>
     <div
-        data-cursor="<%= @timeline['cursor'] %>"
+        data-cursor="<%= @timeline[:cursor] %>"
         data-request-path="<%= @ajax_route %>"
         data-did="<%= @bluesky_user.did %>"
         data-controller="infinite-scrolling"
         id="__scroller__"
     >
         <div id="__payload__">
-            <% @timeline['feed'].each do |post| %>
-                <% unless post['reason'].nil? %>
-                    <%= render SkeetReasonComponent.new(reason: post['reason']) %>
+            <% @timeline[:feed].each do |post| %>
+                <% unless post[:reason].nil? %>
+                    <%= render SkeetReasonComponent.new(reason: post[:reason]) %>
                 <% end %>
 
                 <div data-controller="avatar-line">
-                    <% unless post['reply'].nil? %>
-                        <% if post['reply']['parent']['uri'] == post['reply']['root']['uri'] %>
+                    <% unless post[:reply].nil? %>
+                        <% if post[:reply][:parent][:uri] == post[:reply][:root][:uri] %>
                             <div class="mb-6">
                                 <%= render SkeetCompactComponent.new(
-                                    skeet_body: post['reply']['parent'],
+                                    skeet_body: post[:reply][:parent],
                                     user: @user,
                                     bluesky_user: @bluesky_user,
                                 ) %>
                             </div>
-                        <% elsif post['reason'].nil? %>
+                        <% elsif post[:reason].nil? %>
                             <%= render SkeetReasonComponent.new(
                                 reason: {
                                     '$type' => 'io.clearsky.customDefs#reasonReply',
-                                    'to' => post['reply']['parent']['author'],
+                                    'to' => post[:reply][:parent][:author],
                                 },
                             ) %>
                         <% end %>
                     <% end %>
 
                     <%= render SkeetCompactComponent.new(
-                        skeet_body: post['post'],
+                        skeet_body: post[:post],
                         user: @user,
                         bluesky_user: @bluesky_user,
                     ) %>

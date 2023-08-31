@@ -1,26 +1,26 @@
-<% if @embed['$type'] == 'app.bsky.embed.external' %>
+<% if @embed[:$type] == 'app.bsky.embed.external' %>
     <%= render SkeetPostExternalEmbedComponent.new(
-        external: @embed['external'],
+        external: @embed[:external],
         did: @did,
     ) %>
-<% elsif @embed['$type'] == 'app.bsky.embed.images' %>
+<% elsif @embed[:$type] == 'app.bsky.embed.images' %>
     <%= render SkeetPostImagesEmbedComponent.new(
-        images: @embed['images'],
+        images: @embed[:images],
         did: @did,
     ) %>
-<% elsif @embed['$type'] == 'app.bsky.embed.record' %>
+<% elsif @embed[:$type] == 'app.bsky.embed.record' %>
     <%= render SkeetPostRecordEmbedComponent.new(
         embed: @outer_embed,
         did: @did,
     ) %>
-<% elsif @embed['$type'] == 'app.bsky.embed.recordWithMedia' %>
+<% elsif @embed[:$type] == 'app.bsky.embed.recordWithMedia' %>
     <%= render SkeetPostEmbedComponent.new(
-        embed: @embed['media'],
+        embed: @embed[:media],
         did: @did,
         outer_embed: @outer_embed,
     ) %>
     <%= render SkeetPostEmbedComponent.new(
-        embed: @embed['record'],
+        embed: @embed[:record],
         did: @did,
         outer_embed: @outer_embed,
     ) %>

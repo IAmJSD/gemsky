@@ -4,11 +4,11 @@ module ApplicationHelper
     end
 
     def get_parents(item)
-        parent = item['parent']
+        parent = item[:parent]
         parents = []
         while parent
             parents << parent
-            parent = parent['parent']
+            parent = parent[:parent]
         end
         parents.reverse
     end

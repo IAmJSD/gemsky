@@ -1,13 +1,13 @@
-<% if @reason['$type'] == 'app.bsky.feed.defs#reasonRepost' %>
+<% if @reason[:$type] == 'app.bsky.feed.defs#reasonRepost' %>
     <p class="text-sm ml-2 mb-3 text-gray-700 dark:text-gray-400" data-controller="twemoji">
-        <a href="<%= helpers.make_profile_link @reason['by']['did'] %>" class="unstyled" target="_top">
-            <%= icon 'fa-solid', 'retweet' %> Reskeeted by <%= @reason['by']['displayName'] %>
+        <a href="<%= helpers.make_profile_link @reason[:by][:did] %>" class="unstyled" target="_top">
+            <%= icon 'fa-solid', 'retweet' %> Reskeeted by <%= @reason[:by][:displayName] %>
         </a>
     </p>
-<% elsif @reason['$type'] == 'io.clearsky.customDefs#reasonReply' %>
+<% elsif @reason[:$type] == 'io.clearsky.customDefs#reasonReply' %>
     <p class="text-sm ml-2 mb-3 text-gray-700 dark:text-gray-400" data-controller="twemoji">
-        <a href="<%= helpers.make_profile_link @reason['to']['did'] %>" class="unstyled" target="_top">
-            <%= icon 'fa-solid', 'reply' %> Replying to <%= @reason['to']['displayName'] %>
+        <a href="<%= helpers.make_profile_link @reason[:to][:did] %>" class="unstyled" target="_top">
+            <%= icon 'fa-solid', 'reply' %> Replying to <%= @reason[:to][:displayName] %>
         </a>
     </p>
 <% end %>

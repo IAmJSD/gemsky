@@ -205,8 +205,8 @@ class SkeetRenderer
         text_ascii = text.dup.force_encoding('ASCII-8BIT')
         @facets.each do |facet|
             # Get the start/end indexes.
-            start_index = facet['index']['byteStart']
-            end_index = facet['index']['byteEnd']
+            start_index = facet[:index][:byteStart]
+            end_index = facet[:index][:byteEnd]
 
             # Get everything between this start index and the last end and push it.
             between = text_ascii[last_end...start_index]
@@ -222,19 +222,19 @@ class SkeetRenderer
             safe_content = ERB::Util.html_escape(content)
 
             # Get the first feature.
-            feature = facet['features'].first
+            feature = facet[:features].first
             unless feature
                 tokens.push(content)
                 next
             end
 
             # Switch on the type.
-            case feature['$type']
+            case feature[:$type]
             when 'app.bsky.richtext.facet#mention'
-                url = "/profile/#{feature['did']}"
+                url = "/profile/#{feature[:did]}"
                 html = "<a target=\"_top\" href=\"#{ERB::Util.html_escape(url)}\">#{safe_content}</a>".html_safe
             when 'app.bsky.richtext.facet#link'
-                url = feature['uri']
+                url = feature[:uri]
 
                 # Try to parse the link.
                 parsed, is_media = handle_spooky_url(url)
@@ -274,7 +274,7 @@ class SkeetRenderer
 
         # Get the facets in this content warning.
         cw_facets = @facets.select do |facet|
-            facet['index']['byteStart'] < match[0].length
+            facet[:index][:byteStart] < match[0].length
         end
 
         # Get the content warning text.
@@ -282,9 +282,9 @@ class SkeetRenderer
 
         # Remove any facets that are in the content warning and reallign them to the start of the text.
         @facets = @facets.select do |facet|
-            return false unless facet['index']['byteStart'] > match[0].length
-            facet['index']['byteStart'] -= match[0].length
-            facet['index']['byteEnd'] -= match[0].length
+            return false unless facet[:index][:byteStart] > match[0].length
+            facet[:index][:byteStart] -= match[0].length
+            facet[:index][:byteEnd] -= match[0].length
             true
         end
 

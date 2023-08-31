@@ -10,7 +10,7 @@ class SkeetPostContentsComponent < ViewComponent::Base
   
     def skeet_hash
       return @skeet_hash unless @skeet_hash.nil?
-      @skeet_hash = Digest::SHA256.hexdigest(@skeet_body['uri'])
+      @skeet_hash = Digest::SHA256.hexdigest(@skeet_body[:uri])
     end
   
     def make_media_url_frame(media_url)
@@ -28,10 +28,10 @@ class SkeetPostContentsComponent < ViewComponent::Base
         form_with(url: '/components/skeet_action', data: data, method: :patch) do |form|
             values = form.hidden_field(:skeet_action, value: action) +
                 form.hidden_field(:did, value: @bluesky_user.did) +
-                form.hidden_field(:post_uri, value: @skeet_body['uri']) +
-                form.hidden_field(:post_cid, value: @skeet_body['cid'])
+                form.hidden_field(:post_uri, value: @skeet_body[:uri]) +
+                form.hidden_field(:post_cid, value: @skeet_body[:cid])
 
-            preexisting_uri = @skeet_body['viewer'][action.to_s]
+            preexisting_uri = @skeet_body[:viewer][action.to_s]
             if preexisting_uri.present?
                 values += form.hidden_field(:action_cid, value: preexisting_uri.split('/').last)
             end

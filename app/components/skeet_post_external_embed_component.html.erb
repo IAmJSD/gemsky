@@ -1,11 +1,11 @@
 <div class="mt-2">
-    <a class="unstyled" href="<%= @external['uri'] %>" target="_blank">
+    <a class="unstyled" href="<%= @external[:uri] %>" target="_blank">
         <div class="flex border-gray-800 border-2 rounded-md p-2">
-            <% unless @external['thumb'].nil? %>
+            <% unless @external[:thumb].nil? %>
                 <div class="flex-col my-auto w-56 mr-4">
                     <img
                         class="rounded object-cover"
-                        src="https://bsky-image-proxy.webscalesoftware.ltd/bsky.social/<%= @did %>/<%= @external['thumb']['ref']['$link'] %>"
+                        src="https://bsky-image-proxy.webscalesoftware.ltd/bsky.social/<%= @did %>/<%= @external[:thumb][:ref][:$link] %>"
                         loading="lazy"
                     />
                 </div>
@@ -13,15 +13,15 @@
 
             <div class="flex-col">
                 <p class="text-sm mt-2 font-bold">
-                    <%= @external['title'] %>
+                    <%= @external[:title] %>
                 </p>
 
                 <p class="text-sm mt-1">
-                    <%= @external['description'] %>
+                    <%= @external[:description] %>
                 </p>
 
                 <p class="text-gray-700 dark:text-gray-400 text-xs mt-2">
-                    <%= icon 'fa-solid', 'link' %> <%= URI.parse(@external['uri']).hostname %>
+                    <%= icon 'fa-solid', 'link' %> <%= URI.parse(@external[:uri]).hostname %>
                 </p>
             </div>
         </div>

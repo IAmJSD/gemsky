@@ -1,8 +1,8 @@
 <div data-controller="avatar-line">
-    <% get_parents(@post['thread']).each do |parent| %>
+    <% get_parents(@post[:thread]).each do |parent| %>
         <div class="mb-6">
             <%= render SkeetCompactComponent.new(
-                skeet_body: parent['post'],
+                skeet_body: parent[:post],
                 user: @user,
                 bluesky_user: @bluesky_user,
             ) %>
@@ -11,7 +11,7 @@
 
     <span data-controller="scroll-anchor">
         <%= render SkeetHighlightComponent.new(
-            skeet_body: @post['thread']['post'],
+            skeet_body: @post[:thread][:post],
             user: @user,
             bluesky_user: @bluesky_user,
         ) %>
@@ -19,12 +19,12 @@
 </div>
 
 <div class="mt-4">
-    <% @post['thread']['replies'].each do |child| %>
+    <% @post[:thread][:replies].each do |child| %>
         <%= render DividerComponent.new %>
 
         <div class="my-4">
             <%= render SkeetCompactComponent.new(
-                skeet_body: child['post'],
+                skeet_body: child[:post],
                 user: @user,
                 bluesky_user: @bluesky_user,
             ) %>

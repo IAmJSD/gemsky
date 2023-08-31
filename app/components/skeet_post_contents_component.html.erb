@@ -1,14 +1,14 @@
 <div class="block">
-    <%= SkeetRenderer.new(@skeet_body['record']['text'], skeet_hash, @skeet_body['record']['facets'] || []).render do |renderer| %>
+    <%= SkeetRenderer.new(@skeet_body[:record][:text], skeet_hash, @skeet_body[:record][:facets] || []).render do |renderer| %>
         <%# This is cursed because of how the renderer works but speed innit. %>
-        <% if @skeet_body['record']['embed'].present? %>
+        <% if @skeet_body[:record][:embed].present? %>
             <%
-                uri = @skeet_body['uri']
+                uri = @skeet_body[:uri]
                 did = uri.split('/')[2]
             %>
             <% render SkeetPostEmbedComponent.new(
-                embed: @skeet_body['record']['embed'],
-                outer_embed: @skeet_body['embed'],
+                embed: @skeet_body[:record][:embed],
+                outer_embed: @skeet_body[:embed],
                 did: did,
             ) %>
         <% elsif renderer.media_url %>
@@ -27,16 +27,16 @@
                 <div class="flex-col">
                     <%= skeet_action(:reply, {
                         controller: 'composer',
-                        uri: @skeet_body['uri'],
-                        cid: @skeet_body['cid'],
-                        did: @skeet_body['author']['did'],
+                        uri: @skeet_body[:uri],
+                        cid: @skeet_body[:cid],
+                        did: @skeet_body[:author][:did],
                         action: 'reply',
                     }) do %>
                         <span
                             class="text-neutral-600 dark:text-neutral-400"
-                            aria-label="<%= pluralize(@skeet_body['replyCount'], 'reply') %>"
+                            aria-label="<%= pluralize(@skeet_body[:replyCount], 'reply') %>"
                         >
-                            <%= icon 'fa-solid', 'comment' %> <%= @skeet_body['replyCount'] %>
+                            <%= icon 'fa-solid', 'comment' %> <%= @skeet_body[:replyCount] %>
                         </span>
                     <% end %>
                 </div>
@@ -44,23 +44,23 @@
                 <div class="flex-col ml-4">
                     <%= skeet_action(:like) do %>
                         <span
-                            class="<% if @skeet_body['viewer']['like'] %> text-red-600 dark:text-red-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
-                            aria-label="<%= pluralize(@skeet_body['likeCount'], 'like') %>"
+                            class="<% if @skeet_body[:viewer][:like] %> text-red-600 dark:text-red-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
+                            aria-label="<%= pluralize(@skeet_body[:likeCount], 'like') %>"
                         >
-                            <%= icon 'fa-solid', 'heart' %> <%= @skeet_body['likeCount'] %>
+                            <%= icon 'fa-solid', 'heart' %> <%= @skeet_body[:likeCount] %>
                         </span>
                     <% end %>
                 </div>
 
-                <div class="flex-col ml-4" <% unless @skeet_body['viewer']['repost'] %> data-controller="popper" <% end %>>
-                    <%= skeet_action(:repost, @skeet_body['viewer']['repost'] ? {} : {
+                <div class="flex-col ml-4" <% unless @skeet_body[:viewer][:repost] %> data-controller="popper" <% end %>>
+                    <%= skeet_action(:repost, @skeet_body[:viewer][:repost] ? {} : {
                         'popper-target': 'form',
                     }) do %>
                         <span
-                            class="<% if @skeet_body['viewer']['repost'] %> text-green-600 dark:text-green-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
-                            aria-label="<%= pluralize(@skeet_body['repostCount'], 'repost') %>"
+                            class="<% if @skeet_body[:viewer][:repost] %> text-green-600 dark:text-green-400 <% else %> text-neutral-600 dark:text-neutral-400 <% end %>"
+                            aria-label="<%= pluralize(@skeet_body[:repostCount], 'repost') %>"
                         >
-                            <%= icon 'fa-solid', 'retweet' %> <%= @skeet_body['repostCount'] %>
+                            <%= icon 'fa-solid', 'retweet' %> <%= @skeet_body[:repostCount] %>
                         </span>
                     <% end %>
                     <div data-popper-target="tooltip" class="hidden bg-zinc-100 dark:bg-zinc-900 p-2 rounded-md shadow-md">
@@ -72,9 +72,9 @@
 
                         <%= skeet_action(:repost, {
                             controller: 'composer',
-                            uri: @skeet_body['uri'],
-                            cid: @skeet_body['cid'],
-                            did: @skeet_body['author']['did'],
+                            uri: @skeet_body[:uri],
+                            cid: @skeet_body[:cid],
+                            did: @skeet_body[:author][:did],
                             action: 'reskeet',
                         }) do %>
                             <%= icon 'fa-solid', 'quote-left' %> Quote Reskeet

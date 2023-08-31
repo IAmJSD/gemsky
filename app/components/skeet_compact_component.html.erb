@@ -1,12 +1,12 @@
 <div data-controller="twemoji" class="block">
-    <% profile = @skeet_body['author'] %>
+    <% profile = @skeet_body[:author] %>
 
     <div class="flex">
         <div class="flex-col min-w-fit">
-            <a href="<%= helpers.make_profile_link profile['did'] %>" target="_top" class="unstyled">
+            <a href="<%= helpers.make_profile_link profile[:did] %>" target="_top" class="unstyled">
                 <img
                     class="w-12 h-12 rounded-full"
-                    src="<%= profile['avatar'] ? profile['avatar'] : '/default_pfp.png' %>"
+                    src="<%= profile[:avatar] ? profile[:avatar] : '/default_pfp.png' %>"
                     data-line-target
                     loading="lazy"
                     alt=""
@@ -17,18 +17,18 @@
         <div class="flex-col flex-grow ml-4">
             <div class="mb-1 flex w-full">
                 <p class="flex-col">
-                    <a href="<%= helpers.make_profile_link profile['did'] %>" target="_top" class="unstyled">
-                        <%= profile['displayName'] %> <span class="text-gray-700 dark:text-gray-400"><%= profile['handle'] %></span>
+                    <a href="<%= helpers.make_profile_link profile[:did] %>" target="_top" class="unstyled">
+                        <%= profile[:displayName] %> <span class="text-gray-700 dark:text-gray-400"><%= profile[:handle] %></span>
                     </a>
                 </p>
 
                 <p class="flex-col flex-grow text-right text-gray-700 dark:text-gray-400">
-                    <%= time_ago_shorthand @skeet_body['record']['createdAt'] %>
+                    <%= time_ago_shorthand @skeet_body[:record][:createdAt] %>
                 </p>
             </div>
 
             <%# TODO: add the authed param %>
-            <div data-controller="subtle-link" data-href="<%= helpers.make_post_link profile['did'], @skeet_body['uri'].split('/').last %>">
+            <div data-controller="subtle-link" data-href="<%= helpers.make_post_link profile[:did], @skeet_body[:uri].split('/').last %>">
                 <%= render SkeetPostContentsComponent.new(
                     skeet_body: @skeet_body,
                     user: @user,

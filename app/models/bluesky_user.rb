@@ -90,7 +90,7 @@ class BlueskyUser < ApplicationRecord
 
             # Get the DID.
             begin
-                self.did = BlueskyClient.new(self.identifier, self.token).get_session['did']
+                self.did = BlueskyClient.new(self.identifier, self.token).get_session[:did]
             rescue
                 self.did = nil
             end

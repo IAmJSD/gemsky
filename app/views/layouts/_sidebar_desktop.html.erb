@@ -47,7 +47,7 @@
                 <div class="flex-col min-w-fit">
                     <img
                         class="w-12 h-12 rounded-full"
-                        src="<%= @profile['avatar'] ? @profile['avatar'] : '/default_pfp.png' %>"
+                        src="<%= @profile[:avatar] ? @profile[:avatar] : '/default_pfp.png' %>"
                         loading="lazy"
                         alt=""
                     />
@@ -55,10 +55,10 @@
 
                 <div class="flex-col ml-3 my-auto text-left">
                     <h3 class="text-lg font-medium">
-                        <%= @profile['displayName'] %>
+                        <%= @profile[:displayName] %>
                     </h3>
                     <p class="text-sm">
-                        <%= @profile['handle'] %>
+                        <%= @profile[:handle] %>
                     </p>
                 </div>
             </div>

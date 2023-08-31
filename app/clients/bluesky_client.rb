@@ -23,12 +23,12 @@ class BlueskyClient
     end
 
     def get_notification_unread_count
-        xrpc_client.get.app_bsky_notification_getUnreadCount['count']
+        xrpc_client.get.app_bsky_notification_getUnreadCount[:count]
     end
 
     def self.resolve_handle(handle)
         return handle if handle.match?(DID)
-        anonymous_xrpc_client.get.com_atproto_identity_resolveHandle(handle: handle)['did']
+        anonymous_xrpc_client.get.com_atproto_identity_resolveHandle(handle: handle)[:did]
     end
 
     def get_post_thread(uri)
@@ -80,8 +80,8 @@ class BlueskyClient
             # Refresh the token.
             s = XrpcClient.new('https://bsky.social', @refresh_token).post.com_atproto_server_refreshSession
         end
-        @auth_token = s['accessJwt']
-        @refresh_token = s['refreshJwt']
+        @auth_token = s[:accessJwt]
+        @refresh_token = s[:refreshJwt]
         @token_expires_at = Time.now + 2.minutes
         @xrpc_client = XrpcClient.new('https://bsky.social', @auth_token)
     end
