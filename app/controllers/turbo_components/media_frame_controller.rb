@@ -80,7 +80,7 @@ module TurboComponents
                 @gif_id = url.path.split('-').last
 
                 # Get the giphy API key.
-                api_key = ENV[:GIPHY_API_KEY] || Rails.application.credentials.giphy_api_key
+                api_key = ENV['GIPHY_API_KEY'] || Rails.application.credentials.giphy_api_key
                 return render 'blank_media' if api_key.nil?
 
                 # Make a request to the Giphy API.
