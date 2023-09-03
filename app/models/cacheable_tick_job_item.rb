@@ -1,0 +1,2 @@
+class CacheableTickJobItem < ApplicationRecord
+end

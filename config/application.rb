@@ -29,7 +29,17 @@ class Application < Rails::Application
   #
   # config.time_zone = "Central Time (US & Canada)"
   # config.eager_load_paths << Rails.root.join("extras")
+  config.eager_load_paths << Rails.root.join("app", "cacheable")
 
   # Don't generate system test files.
   config.generators.system_tests = nil
+
+  # Load in the cacheable tickers.
+  config.after_initialize do
+    files = Dir.glob(Rails.root.join('app', 'cacheable', '*_cacheable.rb'))
+    files.each do |file|
+        class_name = File.basename(file, '.rb').classify
+        class_name.constantize.load_tickers
+    end
+  end
 end
