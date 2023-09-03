@@ -3,7 +3,11 @@ class CacheableTickJob < ApplicationJob
 
   def perform(cacheable_class_name, slot_class_name, slot_id)
     # Get the slot from the database.
-    slot = slot_class_name.constantize.find(slot_id)
+    slot_class = slot_class_name.constantize
+    slot = nil
+    slot_class.transaction do
+      slot = slot_class.find(slot_id)
+    end
 
     # Return and destroy the reload job if the slot is nil.
     if slot.nil?

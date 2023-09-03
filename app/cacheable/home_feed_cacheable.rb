@@ -8,6 +8,8 @@ class HomeFeedCacheable < BaseCacheable
     end
 
     def load_resource
-        bluesky_user.bluesky_client.get_timeline
+        x = bluesky_user.bluesky_client.get_timeline
+        bluesky_user.save!
+        x
     end
 end
