@@ -43,6 +43,11 @@ class BaseCacheable
         # non-pluralized model name.
         model_class = cache_for_each.to_s.classify.constantize
 
+        # In development, drop all CacheableTickJobItems for this class.
+        if Rails.env.development?
+            CacheableTickJobItem.where(cacheable_class: self.name).destroy_all
+        end
+
         # Go through each model.
         model_class.find_each do |model|
             # Check if there is a CacheableTickJob for this.
