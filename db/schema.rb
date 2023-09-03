@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_28_022806) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_03_034731) do
   create_table "bluesky_user_editors", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "bluesky_user_id", null: false
@@ -31,6 +31,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_022806) do
     t.index ["did"], name: "index_bluesky_users_on_did", unique: true
     t.index ["token"], name: "index_bluesky_users_on_token", unique: true
     t.index ["user_id"], name: "index_bluesky_users_on_user_id"
+  end
+
+  create_table "cacheable_tick_job_items", force: :cascade do |t|
+    t.string "cacheable_class", null: false
+    t.string "slot_class", null: false
+    t.integer "slot_id", null: false
+    t.string "job_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cacheable_class", "slot_class", "slot_id"], name: "cacheable_tick_job_items_unique", unique: true
   end
 
   create_table "half_tokens", force: :cascade do |t|

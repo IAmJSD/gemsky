@@ -7,11 +7,11 @@ module FeedConcern
         def home_feed
             ajax_feed = is_ajax_feed?
 
-            @timeline = @bluesky_user.bluesky_client.get_timeline(
+            @timeline = ajax_feed ? @bluesky_user.bluesky_client.get_timeline(
                 'reverse-chronological',
-                ajax_feed ? 30 : 50,
+                30,
                 get_cursor,
-            )
+            ) : HomeFeedCacheable.get(@bluesky_user)
             @bluesky_user.save!
             @ajax_route = '/ajax/home_feed' unless ajax_feed
 
