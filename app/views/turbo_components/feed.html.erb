@@ -20,15 +20,13 @@
                             </p>
                         <% end %>
 
-                        <% cache [post[:reply], @bluesky_user, @user] do %>
-                            <div class="mb-6">
-                                <%= render SkeetCompactComponent.new(
-                                    skeet_body: post[:reply][:parent],
-                                    user: @user,
-                                    bluesky_user: @bluesky_user,
-                                ) %>
-                            </div>
-                        <% end %>
+                        <div class="mb-6">
+                            <%= render SkeetCompactComponent.new(
+                                skeet_body: post[:reply][:parent],
+                                user: @user,
+                                bluesky_user: @bluesky_user,
+                            ) %>
+                        </div>
                     <% end %>
 
                     <% unless post[:reason].nil? %>
@@ -41,13 +39,11 @@
                         <% end %>
                     <% end %>
 
-                    <% cache [post[:post], @bluesky_user, @user] do %>
-                        <%= render SkeetCompactComponent.new(
-                            skeet_body: post[:post],
-                            user: @user,
-                            bluesky_user: @bluesky_user,
-                        ) %>
-                    <% end %>
+                    <%= render SkeetCompactComponent.new(
+                        skeet_body: post[:post],
+                        user: @user,
+                        bluesky_user: @bluesky_user,
+                    ) %>
                 </div>
 
                 <div class="my-3">
