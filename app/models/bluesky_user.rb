@@ -19,6 +19,11 @@ class BlueskyUser < ApplicationRecord
         @identifier = identifier
     end
 
+    def any_editor_used_after?(time_ago)
+        editor_ids = self.bluesky_user_editors.pluck(:user_id)
+        UserToken.where(user_id: editor_ids).where('updated_at > ?', time_ago).exists?
+    end
+
     def regenerate_bluesky_client!
         client = BlueskyClient.new(self.did, self.token)
         self.bluesky_client_marshalled = Base64.encode64(Marshal.dump(client))

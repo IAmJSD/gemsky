@@ -9,29 +9,35 @@
     >
         <div id="__payload__">
             <% @timeline[:feed].each do |post| %>
-                <% unless post[:reason].nil? %>
-                    <%= render SkeetReasonComponent.new(reason: post[:reason]) %>
-                <% end %>
-
                 <div data-controller="avatar-line">
                     <% unless post[:reply].nil? %>
+                        <% if post[:reply][:parent][:uri] != post[:reply][:root][:uri] %>
+                            <% author = post[:reply][:root][:author] %>
+                            <p class="text-sm ml-2 mb-3 text-gray-700 dark:text-gray-400" data-controller="twemoji">
+                                <a href="<%= make_profile_link author[:did] %>" class="unstyled" target="_top">
+                                    <%= icon 'fa-solid', 'reply' %> Replying to <%= author[:displayName] %>
+                                </a>
+                            </p>
+                        <% end %>
+
                         <% cache [post[:reply], @bluesky_user, @user] do %>
-                            <% if post[:reply][:parent][:uri] == post[:reply][:root][:uri] %>
-                                <div class="mb-6">
-                                    <%= render SkeetCompactComponent.new(
-                                        skeet_body: post[:reply][:parent],
-                                        user: @user,
-                                        bluesky_user: @bluesky_user,
-                                    ) %>
-                                </div>
-                            <% elsif post[:reason].nil? %>
-                                <%= render SkeetReasonComponent.new(
-                                    reason: {
-                                        '$type' => 'io.clearsky.customDefs#reasonReply',
-                                        'to' => post[:reply][:parent][:author],
-                                    },
+                            <div class="mb-6">
+                                <%= render SkeetCompactComponent.new(
+                                    skeet_body: post[:reply][:parent],
+                                    user: @user,
+                                    bluesky_user: @bluesky_user,
                                 ) %>
-                            <% end %>
+                            </div>
+                        <% end %>
+                    <% end %>
+
+                    <% unless post[:reason].nil? %>
+                        <% if post[:reply] %>
+                        <div class="ml-14">
+                        <% end %>
+                            <%= render SkeetReasonComponent.new(reason: post[:reason]) %>
+                        <% if post[:reply] %>
+                        </div>
                         <% end %>
                     <% end %>
 

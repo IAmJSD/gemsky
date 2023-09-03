@@ -31,6 +31,9 @@ application.register("popper", PopperController)
 import ScrollAnchorController from "./scroll_anchor_controller"
 application.register("scroll-anchor", ScrollAnchorController)
 
+import SubmitOnCheckboxController from "./submit_on_checkbox_controller"
+application.register("submit-on-checkbox", SubmitOnCheckboxController)
+
 import SubtleLinkController from "./subtle_link_controller"
 application.register("subtle-link", SubtleLinkController)
 
