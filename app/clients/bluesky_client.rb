@@ -54,6 +54,10 @@ class BlueskyClient
         resp
     end
 
+    def get_preferences
+        xrpc_client.get.app_bsky_actor_getPreferences
+    end
+
     private
 
     def token_outdated?
