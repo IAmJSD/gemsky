@@ -58,6 +58,10 @@ class BlueskyClient
         xrpc_client.get.app_bsky_actor_getPreferences
     end
 
+    def put_preferences(preferences)
+        xrpc_client.post.app_bsky_actor_putPreferences(preferences: preferences)
+    end
+
     private
 
     def token_outdated?

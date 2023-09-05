@@ -1,24 +1,21 @@
-class BlueskyPreferences
-    include ActiveModel::Model
-    include ActiveModel::Attributes
-    include ActiveModel::API
-    extend ActiveModel::Callbacks
-
-    attribute :nsfw, :string
-    attribute :hate, :string
-    attribute :spam, :string
-    attribute :gore, :string
-    attribute :impersonation, :string
-    attribute :adult_content, :boolean
+class BlueskyPreferences < BaseModel
+    schema({
+        :nsfw => :string, :hate => :string,
+        :spam => :string, :gore => :string,
+        :impersonation => :string,
+        :suggestive => :string,
+        :nudity => :string,
+        :adult_content => :boolean,
+    })
 
     ACTION_TYPES = %w[hide warn show].freeze
-    validates :nsfw, inclusion: { in: ACTION_TYPES }, presence: true
-    validates :hate, inclusion: { in: ACTION_TYPES }, presence: true
-    validates :spam, inclusion: { in: ACTION_TYPES }, presence: true
-    validates :gore, inclusion: { in: ACTION_TYPES }, presence: true
-    validates :impersonation, inclusion: { in: ACTION_TYPES }, presence: true
+    ATTR_NAMES = [
+        :nsfw, :hate, :spam, :gore, :impersonation,
+        :suggestive, :nudity,
+    ]
+    validates_many ATTR_NAMES, inclusion: { in: ACTION_TYPES }, presence: true
 
-    def self.find_by_bluesky_user(bluesky_user)
+    def self.find_by_bluesky_user!(bluesky_user)
         preferences = bluesky_user.bluesky_client.get_preferences
         kwargs = {
             nsfw: 'warn',
@@ -26,6 +23,8 @@ class BlueskyPreferences
             spam: 'warn',
             gore: 'warn',
             impersonation: 'warn',
+            suggestive: 'warn',
+            nudity: 'warn',
             adult_content: false,
         }
         preferences[:preferences].each do |preference|
@@ -41,6 +40,26 @@ class BlueskyPreferences
     end
 
     def update(**kwargs)
-        # Update the attributes.
+        self.assign_attributes(**kwargs)
+        return false unless self.valid?
+
+        @bluesky_user.bluesky_client.put_preferences(self.build_preferences_body)
+    end
+
+    private
+
+    # Builds the body to send to Bluesky because it is needlessly complex.
+    def build_preferences_body
+        put_opts = [
+            {:$type => 'app.bsky.actor.defs#adultContentPref', enabled: self.adult_content},
+        ]
+        ATTR_NAMES.each do |attr_name|
+            put_opts << {
+                :$type => 'app.bsky.actor.defs#contentLabelPref',
+                label: attr_name.to_s,
+                visibility: self.send(attr_name),
+            }
+        end
+        put_opts
     end
 end

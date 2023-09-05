@@ -10,6 +10,11 @@ class BlueskyUser < ApplicationRecord
     after_create :add_owner_to_editors
     validate :user_is_an_editor, on: :update
 
+    def bluesky_preferences
+        return @bsky_prefs unless @bsky_prefs.nil?
+        @bsky_prefs = BlueskyPreferences.find_by_bluesky_user!(self)
+    end
+
     def identifier
         return @identifier unless @identifier.nil?
         self.did
