@@ -44,6 +44,7 @@ class BlueskyPreferences < BaseModel
         return false unless self.valid?
 
         @bluesky_user.bluesky_client.put_preferences(self.build_preferences_body)
+        true
     end
 
     private
